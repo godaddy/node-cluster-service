@@ -1,0 +1,11 @@
+{
+  "name": "cluster-service",
+  "version": "0.2.0",
+  "description": "Turns your single process code into a fault-resilient multi-process service with built-in REST & CLI support",
+  "main": "./cluster-service.js",
+  "dependencies": {
+	  "async": ">=0.2.x",	  
+	  "request": ">=2.21.0",
+	  "extend": ">=1.1.x"
+  }
+}
