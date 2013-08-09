@@ -4,8 +4,7 @@
 
 ## Install
 
-	git clone https://github.secureserver.net/PC/node-dps.git
-	npm install
+	npm install cluster-service
 
 
 ## What is it?

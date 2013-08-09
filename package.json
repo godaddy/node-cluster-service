@@ -1,6 +1,6 @@
 {
   "name": "cluster-service",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": { "name": "Aaron Silvas", "email": "asilvas@godaddy.com" },
   "description": "Turns your single process code into a fault-resilient multi-process service with built-in REST & CLI support",
   "main": "./cluster-service.js",
@@ -14,7 +14,7 @@
 	"url" : "https://github.com/godaddy/node-cluster-service.git"
   },
   "license": "MIT",
-  "homepage": { "url": "https://github.com/godaddy/node-cluster-service" },
+  "homepage": "https://github.com/godaddy/node-cluster-service",
   "bugs": { "url": "https://github.com/godaddy/node-cluster-service/issues" },
   "keywords": [ "cluster", "service", "ha", "high availability", "cli", "remote access" ]
 }
