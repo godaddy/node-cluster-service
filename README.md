@@ -109,4 +109,12 @@ Creating custom, or overriding commands and events is as simple as:
 
 Unit tests can be run using [nodeunit](https://github.com/caolan/nodeunit). You can run this shell command from the root of the project:
 
-    nodeunit test
+    node test
+
+or individual tests...
+
+	node test test-exit
+
+npm is wired up as well.
+
+	npm test
