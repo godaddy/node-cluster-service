@@ -104,3 +104,9 @@ Creating custom, or overriding commands and events is as simple as:
 	
 	// can also issue commands programatically
 	cservice.trigger("custom", function(err) { /* my callback */ }, "arg1value", "arg2value");
+
+## Unit Tests
+
+Unit tests can be run using [nodeunit](https://github.com/caolan/nodeunit). You can run this shell command from the root of the project:
+
+    nodeunit test
