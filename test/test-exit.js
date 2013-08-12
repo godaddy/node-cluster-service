@@ -9,7 +9,7 @@ module.exports = {
         console.log = this._log;
         callback();
     },
-    "Now cmd not issued": function(test){
+    "Invalid request if cmd not equal to now": function(test){
         test.expect(1);
         var evt = {};
         var cmd = "Not now";

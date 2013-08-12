@@ -10,7 +10,7 @@
 	  "extend": ">=1.1.x"
   },
   "devDependencies": {
-      "nodeunit": ">=1.2.24"
+      "nodeunit": ">=0.8.1"
   },
   "repository": {
     "type" : "git",
