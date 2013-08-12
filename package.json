@@ -1,6 +1,6 @@
 {
   "name": "cluster-service",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": { "name": "Aaron Silvas", "email": "asilvas@godaddy.com" },
   "description": "Turns your single process code into a fault-resilient multi-process service with built-in REST & CLI support",
   "main": "./cluster-service.js",
