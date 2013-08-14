@@ -1,5 +1,6 @@
 # cluster-service
 
+[![Build Status](https://travis-ci.org/godaddy/node-cluster-service.png)](https://travis-ci.org/godaddy/node-cluster-service)
 
 
 ## Install
