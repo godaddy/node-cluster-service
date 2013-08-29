@@ -13,10 +13,11 @@ describe('Start & Stop', function(){
 	
 	describe('Add 2nd worker', function(){  
 		it('2 workers should be running', function(done){
-			cservice.start("./test/workers/basic",  { workerCount: 1, accessKey: "123", cliEnabled: false }, function() {
+			cservice.trigger("start", function() {
 				assert.equal(cservice.workers.length, 2, "2 workers expected, but " + cservice.workers.length + " found");
 				done();
-			});
+			}, "./test/workers/basic2"
+			);
 		});  
 	});
 	
@@ -47,6 +48,17 @@ describe('Start & Stop', function(){
 				assert.equal(data.workers.length, 2);
 				done();
 			});
+		});  
+	});
+
+	describe('Test help command', function(){  
+		it('Help should be available', function(done){
+			cservice.trigger("help",  function(err, data) {
+				assert.equal(err, null);
+				assert.equal(data.info, "Returns health of service. May be overidden by service to expose app-specific data.");
+				assert.equal(data.command, "health");
+				done();
+			}, "health");
 		});  
 	});
 	

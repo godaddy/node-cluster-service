@@ -11,10 +11,10 @@ describe('Health cmd', function(){
 	});
 	
 	it('more', function(done){
-    	var callback = function(nullObj, obj){
+    	var callback = function(nullObj, data){
     		assert.equal(nullObj, null);
-    		assert.equal(obj.info, "Returns health of service. May be overidden by service to expose app-specific data.");
-    		assert.equal(obj.command, "health");
+    		assert.equal(data.info, "Returns health of service. May be overidden by service to expose app-specific data.");
+    		assert.equal(data.command, "health");
     		done();
     	};
 
