@@ -4,6 +4,8 @@ var
 	os = require("os"),
 	util = require("util"),
 	path = require("path"),
+	httpserver = require("./lib/http-server"),
+	cli = null,
 	locals = {
 		events: {},
 		workers: {},
@@ -20,7 +22,8 @@ var
 			workerCount: os.cpus().length,
 			restartDelayMs: 100,
 			allowHttpGet: false, // useful for testing -- not safe for production use
-			restartsPerMinute: 10 // not yet supported
+			restartsPerMinute: 10, // not yet supported
+			cliEnabled: true
 		}
 	}
 ;
@@ -29,7 +32,13 @@ exports.start = function(workerPath, options, cb) {
 	options = extend(true, {}, locals.options, options);
 
 	if (cluster.isMaster) {
-		startMaster(workerPath, options, cb);
+		var first_req = true;
+		startMaster(workerPath, options, function() {
+			if (first_req === true) { // make sure we only cb once...
+				first_req = false;
+				cb && cb();
+			}
+		});
 	} else {
 		// only load worker for on worker processes
 		startWorker(cb);
@@ -37,12 +46,28 @@ exports.start = function(workerPath, options, cb) {
 
 };
 
-exports.stop = function(timeout) {
+exports.stop = function(timeout, cb) {
 	if (locals.state === 0) {
-		throw "Must be running";
+		return;
 	}
 
-	exports.trigger("exit", timeout);
+	if (exports.workers.length > 0) { // issue shutdown
+		exports.trigger("shutdown", function() {
+			httpserver.close();
+			if (cli) {
+				process.exit(1);
+			} else {
+				cb && cb();
+			}
+		}, "all", timeout);
+	} else { // gracefully shutdown
+		httpserver.close();
+		if (cli) {
+			process.exit(1);
+		} else {
+			cb && cb();
+		}
+	}
 };
 
 exports.on = function(eventName, cb, overwriteExisting) {
@@ -51,6 +76,9 @@ exports.on = function(eventName, cb, overwriteExisting) {
 	}
 
 	overwriteExisting = overwriteExisting || true;
+	if (!overwriteExisting && eventName in locals.events) {
+		return; // do not overwrite existing
+	}
 
 	var evt = {
 		name: eventName,
@@ -65,12 +93,12 @@ exports.on = function(eventName, cb, overwriteExisting) {
 
 exports.trigger = function(eventName) {
 	if (locals.state === 0) {
-		throw "Must be running";
+		throw new Error("Must be running");
 	}
 	
 	var evt = locals.events[eventName];
 	if (!evt) {
-		throw "Event " + eventName + " not found";
+		throw new Error("Event " + eventName + " not found");
 	}
 
 	var args = [evt]; // event is always first arg
@@ -79,14 +107,14 @@ exports.trigger = function(eventName) {
 			args.push(arguments[i]);
 		}
 	}
-
+//console.log("trigger." + eventName + ".args=" + args.length);
 	// invoke event callback
 	return evt.cb.apply(null, args);
 };
 
 exports.workerReady = function(options) {
 	if (cluster.isMaster === true) {
-		throw "Cannot call workerReady from master...";
+		throw new Error("Cannot call workerReady from master...");
 	}
 
 	if (locals.workerReady === true) {
@@ -107,7 +135,15 @@ exports.workerReady = function(options) {
 
 Object.defineProperty(exports, "workers", {
 	get: function() {
-		return cluster.workers;
+		var workers = [];
+		var cworkers = cluster.workers;
+		for (var k in cworkers) {
+			var worker = cworkers[k];
+			worker.pid = worker.process.pid;
+			workers.push(worker);
+		}
+	
+		return workers;
 	}
 });
 
@@ -211,8 +247,11 @@ function startMaster(workerPath, options, cb) {
 					}
 				});
 
-				// wire-up CLI
-				require("./lib/cli").init(locals, options);
+				if (options.cliEnabled === true) {
+					// wire-up CLI
+					cli = require("./lib/cli");
+					cli.init(locals, options);
+				}
 			}
 
 			locals.state = 2; // running
@@ -221,6 +260,7 @@ function startMaster(workerPath, options, cb) {
 			for (var i = 0; i < locals.startRequests.length; i++) {
 				locals.startRequests[i](); // execute
 			}
+			locals.startRequests = [];
 		});
 
 		return;
@@ -279,7 +319,7 @@ function startWorker(cb) {
 }
 
 function startListener(options, cb) {
-	require("./lib/http-server").init(locals, options, function(err) {
+	httpserver.init(locals, options, function(err) {
 		if (!err) {
 			console.log("cluster-service is listening at " + options.host + ":" + options.port);
 		}
