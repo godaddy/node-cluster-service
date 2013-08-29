@@ -8,7 +8,7 @@
   "description": "Turns your single process code into a fault-resilient multi-process service with built-in REST & CLI support",
   "main": "./cluster-service.js",
   "scripts": {
-    "test": ".\\node_modules\\.bin\\mocha --reporter spec"
+    "test": "mocha --reporter spec"
   },
   "dependencies": {
     "async": ">=0.2.x",

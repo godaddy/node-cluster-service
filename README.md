@@ -110,6 +110,13 @@ Creating custom, or overriding commands and events is as simple as:
 
 Unit tests can be run using [nodeunit](https://github.com/caolan/nodeunit). You can run this shell command from the root of the project:
 
+Windows:
+
+	npm install mocha -g
+    npm test
+
+Everyone else:
+
     npm test
 
 or individual tests...
