@@ -20,6 +20,16 @@ describe('Start & Stop', function(){
 		});  
 	});
 	
+	describe('Restart workers', function(){  
+		it('2 workers should be running', function(done){
+			cservice.trigger("restart", function() {
+				assert.equal(cservice.workers.length, 2, "2 workers expected, but " + cservice.workers.length + " found");
+				done();
+			}, "all"
+			);
+		});  
+	});
+	
 	describe('Upgrade workers', function(){  
 		it('2 workers should be running', function(done){
 			cservice.trigger("upgrade", function() {
