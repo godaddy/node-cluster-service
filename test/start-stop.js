@@ -19,6 +19,16 @@ describe('Start & Stop', function(){
 			});
 		});  
 	});
+
+	describe('Test workers command', function(){  
+		it('2 workers should be running', function(done){
+			cservice.trigger("workers",  function(err, data) {
+				assert.equal(err, null);
+				assert.equal(data.workers.length, 2);
+				done();
+			});
+		});  
+	});
 	
 	describe('Stop workers', function(){  
 		it('0 workers should be running', function(done){
