@@ -9,7 +9,7 @@ describe('Health cmd', function(){
             done();
         });
 	});
-	
+
 	it('more', function(done){
     	var callback = function(nullObj, data){
     		assert.equal(nullObj, null);
@@ -19,5 +19,5 @@ describe('Health cmd', function(){
     	};
 
     	cmd.more(callback);
-	});  
+	});
 })

@@ -172,10 +172,6 @@ exports.newWorker = function(workerPath, cwd, options, cb) {
 };
 
 function startMaster(workerPath, options, cb) {
-	if (typeof workerPath !== "string") {
-		throw new Error("workerPath MUST be provided when starting your service");
-	}
-
 	options = options || {};
 	options.workerCount = options.workerCount || 1;
 
@@ -205,7 +201,6 @@ function startMaster(workerPath, options, cb) {
 		exports.on("upgrade", require("./lib/upgrade"), false);
 		exports.on("workers", require("./lib/workers"), false);
 		exports.on("health", require("./lib/health"), false);
-		exports.on("options", require("./lib/options"), false);
 		exports.on("workerStart", function(evt, pid, reason) {
 			console.log("worker " + pid + " start, reason: " + (reason || locals.reason));
 		}, false);
@@ -269,7 +264,7 @@ function startMaster(workerPath, options, cb) {
 			startMaster(workerPath, options, cb);
 		});
 		return;
-	} else if (locals.isAttached === false) { // if we're NOT attached, we can spawn the workers now		
+	} else if (locals.isAttached === false && typeof workerPath === "string") { // if we're NOT attached, we can spawn the workers now		
 		// fork it, i'm out of here
 		for (var i = 0; i < options.workerCount; i++) {
 			exports.newWorker(workerPath, null, options);
