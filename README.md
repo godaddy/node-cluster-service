@@ -12,11 +12,15 @@
 
 The short answer:
 
-	Turns your single process code into a fault-resilient multi-process service with built-in REST & CLI support.
+	Turns your single process code into a fault-resilient multi-process service with
+	built-in REST & CLI support.
 
 The long answer:
 
-	Adds the ability to execute worker processes over N cores for extra service resilience, includes worker process monitoring and restart on failure, continuous integration, as well as HTTP & command-line interfaces for health checks, cluster commands, and custom service commands.
+	Adds the ability to execute worker processes over N cores for extra service resilience,
+	includes worker process monitoring and restart on failure, continuous integration,
+	as well as HTTP & command-line interfaces for health checks, cluster commands,
+	and custom service commands.
 
 
  
@@ -26,12 +30,17 @@ At the core of DPS Cluster is parent/child process relationship, which is built 
 
 	// server.js
 	var cservice = require("cluster-service");
-	cservice.start("./worker", { workerCount: os.cpus().length, accessKey: "lksjdf982734", onWorkerStop: function() { /* optional cleanup of my worker */ } });
+	cservice.start("./worker", {
+		workerCount: os.cpus().length, accessKey: "lksjdf982734",
+		onWorkerStop: function() { /* optional cleanup of my worker */ }
+	});
 	
 	// worker.js
 	var cservice = require("cluster-service"); 
 	cservice.workerReady({
-		onWorkerStop: function() { /* perform some optional cleanup if you want to control the exit of worker process */ }
+		onWorkerStop: function() {
+			/* perform some optional cleanup if you want to control the exit of worker process */
+		}
 	});
 	
 	
