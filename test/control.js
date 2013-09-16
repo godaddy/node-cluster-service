@@ -63,4 +63,13 @@ describe('Control', function(){
 			done();
 		});  
 	});
+
+	describe('authorize', function(){
+		it('default is remote and should authorize', function(done){
+			control.setControls({});
+			var isAuthorized = control.authorize("test", control.levels.inproc);
+			assert.equal(isAuthorized, true, "isAuthorized should be true.");
+			done();
+		});  
+	});
 });

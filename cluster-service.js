@@ -5,6 +5,7 @@ var
 	util = require("util"),
 	path = require("path"),
 	httpserver = require("./lib/http-server"),
+	control = require("./lib/control"),
 	cli = null,
 	locals = {
 		events: {},
@@ -24,6 +25,10 @@ var
 			allowHttpGet: false, // useful for testing -- not safe for production use
 			restartsPerMinute: 10, // not yet supported
 			cliEnabled: true
+		},
+		controls: {
+			"shutdown": control.levels.local,
+			"exit": control.levels.local
 		}
 	}
 ;
@@ -187,6 +192,9 @@ function startMaster(workerPath, options, cb) {
 		listener = function(err) {
 		};
 		
+		// Initialize the controls for authorization
+		control.setControls(options.controls);
+
 		/*process.on("uncaughtException", function(err) {
 			console.log("uncaughtException", util.inspect(err));
 		});*/
