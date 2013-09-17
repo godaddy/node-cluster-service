@@ -26,9 +26,9 @@ var
 			restartsPerMinute: 10, // not yet supported
 			cliEnabled: true,
 			controls: {
-				"shutdown": control.levels.local,
-				"exit": control.levels.local,
-				"workers": control.levels.remote
+				"shutdown": "local",
+				"exit": "local",
+				"workers": "remote"
 			}
 		}
 	}

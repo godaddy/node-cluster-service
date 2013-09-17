@@ -22,15 +22,22 @@ describe('Control', function(){
 
 	describe('setControls', function(){
 		it('should not throw', function(done){
-			assert.doesNotThrow(function(){control.setControls({"test" : control.levels.inproc})}, "setControls should not throw.");
+			assert.doesNotThrow(function(){control.setControls({"test" : "inproc"})}, "setControls should not throw.");
+			done();
+		});  
+	});
+
+	describe('setControls', function(){
+		it('should throw if level does not exist', function(done){
+			assert.throws(function(){control.setControls({"test" : "does not exist"})});
 			done();
 		});  
 	});
 
 	describe('addControls', function(){
 		it('should add to controls', function(done){
-			control.setControls({ "test" : control.levels.inproc });
-			var controls = control.addControls({ "test2" : control.levels.local });
+			control.setControls({ "test" : "inproc" });
+			var controls = control.addControls({ "test2" : "local" });
 			assert.equal(controls["test"], control.levels.inproc);
 			assert.equal(controls["test2"], control.levels.local);
 			done();
@@ -39,8 +46,8 @@ describe('Control', function(){
 
 	describe('addControls', function(){
 		it('should override existing controls', function(done){
-			control.setControls({ "test" : control.levels.inproc });
-			var controls = control.addControls({ "test" : control.levels.local });
+			control.setControls({ "test" : "inproc" });
+			var controls = control.addControls({ "test" : "local" });
 			assert.equal(controls["test"], control.levels.local);
 			done();
 		});  
@@ -48,7 +55,7 @@ describe('Control', function(){
 
 	describe('authorize', function(){
 		it('should authorize for exact match', function(done){
-			control.setControls({"test" : control.levels.inproc});
+			control.setControls({"test" : "inproc"});
 			var isAuthorized = control.authorize("test", control.levels.inproc);
 			assert.equal(isAuthorized, true, "isAuthorized should be true.");
 			done();
@@ -57,7 +64,7 @@ describe('Control', function(){
 
 	describe('authorize', function(){
 		it('should authorize inproc if allowed control is local', function(done){
-			control.setControls({"test" : control.levels.local});
+			control.setControls({"test" : "local"});
 			var isAuthorized = control.authorize("test", control.levels.inproc);
 			assert.equal(isAuthorized, true, "isAuthorized should be true.");
 			done();
@@ -67,7 +74,7 @@ describe('Control', function(){
 	describe('authorize', function(){
 		it('default is remote and should authorize', function(done){
 			control.setControls({});
-			var isAuthorized = control.authorize("test", control.levels.inproc);
+			var isAuthorized = control.authorize("test", control.levels.local);
 			assert.equal(isAuthorized, true, "isAuthorized should be true.");
 			done();
 		});  
