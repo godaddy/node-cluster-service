@@ -24,11 +24,12 @@ var
 			restartDelayMs: 100,
 			allowHttpGet: false, // useful for testing -- not safe for production use
 			restartsPerMinute: 10, // not yet supported
-			cliEnabled: true
-		},
-		controls: {
-			"shutdown": control.levels.local,
-			"exit": control.levels.local
+			cliEnabled: true,
+			controls: {
+				"shutdown": control.levels.local,
+				"exit": control.levels.local,
+				"workers": control.levels.remote
+			}
 		}
 	}
 ;
