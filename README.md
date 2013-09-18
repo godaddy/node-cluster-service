@@ -24,9 +24,9 @@ The long answer:
 
 
  
-## Worker Processes
+## Getting Started
 
-At the core of DPS Cluster is parent/child process relationship, which is built atop Node's cluster module, allowing all application code to be executed within child processes, even when resource sharing (i.e. tcp/http binding on the same ports).
+Turning your single process node app/service into a fault-resilient multi-process service with all of the bells and whistles has never been easier!
 
 Your existing application, be it console app or service of some kind:
 
@@ -56,6 +56,7 @@ The REST API is locked to a "accessKey" expected in the query string. The consol
 By default, a worker (child) process that exits unexpectedly will be restarted. This can be configured to prevent processes from dieing too frequently, in the case the desired outcome is to fail completely if there is something seriously wrong with the workers.
 
 	{ cluster: { autoRestart: true, restartDelayMs: 100, restartsPerMinute: 10 } }
+
 
 
 ## Continuous Integration
