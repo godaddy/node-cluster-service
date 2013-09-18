@@ -26,22 +26,25 @@ The long answer:
  
 ## Worker Processes
 
-At the core of DPS Cluster is parent/child process relationship, which is built atop Node's cluster module, allowing all application code to be executed within child processes, even if resource sharing (i.e. tcp/http binding on the same ports).
+At the core of DPS Cluster is parent/child process relationship, which is built atop Node's cluster module, allowing all application code to be executed within child processes, even when resource sharing (i.e. tcp/http binding on the same ports).
+
+Your existing application, be it console app or service of some kind:
+
+	// server.js
+	console.log("Hello World");
+
+Now, with a few extra lines of code, you can add considerably resilience and capabilities to your existing services:
 
 	// server.js
 	var cservice = require("cluster-service");
 	cservice.start("./worker", {
-		workerCount: os.cpus().length, accessKey: "lksjdf982734",
-		onWorkerStop: function() { /* optional cleanup of my worker */ }
+		workerCount: os.cpus().length, accessKey: "lksjdf982734"
 	});
-	
+
 	// worker.js
+	console.log("Hello World"); // notice we moved our original app logic to the worker
 	var cservice = require("cluster-service"); 
-	cservice.workerReady({
-		onWorkerStop: function() {
-			/* perform some optional cleanup if you want to control the exit of worker process */
-		}
-	});
+	cservice.workerReady();
 	
 	
 ## Console & REST API
