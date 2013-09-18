@@ -36,15 +36,13 @@ Your existing application, be it console app or service of some kind:
 Now, with a few extra lines of code, you can add considerably resilience and capabilities to your existing services:
 
 	// server.js
-	var cservice = require("cluster-service");
-	cservice.start("./worker", {
+	require("cluster-service").start("./worker", {
 		workerCount: os.cpus().length, accessKey: "lksjdf982734"
 	});
 
 	// worker.js
 	console.log("Hello World"); // notice we moved our original app logic to the worker
-	var cservice = require("cluster-service"); 
-	cservice.workerReady();
+	require("cluster-service").workerReady();
 	
 	
 ## Console & REST API
