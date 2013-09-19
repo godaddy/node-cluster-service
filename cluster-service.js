@@ -34,6 +34,10 @@ var
 	}
 ;
 
+exports.control = function(controls){
+	control.addControl(controls)
+};
+
 exports.start = function(workerPath, options, cb) {
 	options = extend(true, {}, locals.options, options);
 
