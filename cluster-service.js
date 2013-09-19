@@ -35,7 +35,7 @@ var
 ;
 
 exports.control = function(controls){
-	control.addControl(controls)
+	control.addControls(controls)
 };
 
 exports.start = function(workerPath, options, cb) {
