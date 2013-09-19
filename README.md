@@ -24,39 +24,51 @@ The long answer:
 
 
  
-## Worker Processes
+## Getting Started
 
-At the core of DPS Cluster is parent/child process relationship, which is built atop Node's cluster module, allowing all application code to be executed within child processes, even if resource sharing (i.e. tcp/http binding on the same ports).
+Turning your single process node app/service into a fault-resilient multi-process service with all of the bells and whistles has never been easier!
+
+Your existing application, be it console app or service of some kind:
 
 	// server.js
-	var cservice = require("cluster-service");
-	cservice.start("./worker", {
-		workerCount: os.cpus().length, accessKey: "lksjdf982734",
-		onWorkerStop: function() { /* optional cleanup of my worker */ }
-	});
-	
+	console.log("Hello World");
+
+Now, with a few extra lines of code, you can add considerably resilience and capabilities to your existing services:
+
+	// server.js
+	require("cluster-service").start("./worker", { accessKey: "lksjdf982734" });
+
 	// worker.js
-	var cservice = require("cluster-service"); 
-	cservice.workerReady({
-		onWorkerStop: function() {
-			/* perform some optional cleanup if you want to control the exit of worker process */
-		}
-	});
+	console.log("Hello World"); // notice we moved our original app logic to the worker
+	require("cluster-service").workerReady();
+
 	
-	
+
+## Start Options
+
+When initializing your service, there are a number of options that expose various features:
+
+	require("cluster-service").start(workerPath, { accessKey: "123" });
+
+* accessKey (*REQUIRED*) - A secret key that must be leveraged to invoke commands to your service. Allows CLI & REST interfaces.
+* restartonFailure (default: true) - When a worker stops unexpectedly, should it be automatically restarted?
+* host (default: "localhost") - Host to bind to for REST interface.
+* port (default: 11987) - Port to bind to. If you leverage more than one cluster-service on a machine, you'll want to assign unique ports.
+* workerCount (default: os.cpus().length) - Gives you control over the number of processes to run the same worker concurrently. Recommended to be 2 or more for fault resilience. But some workers do not impact availability, such as task queues, and can be run as a single instance.
+* restartDelayMs (default: 100) - The delay between failure detection and restart.
+* restartsPerMinute (default: 10) - How many restarts are permitted by a worker in a minute before determining too critical to recover from.
+* allowHttpGet (default: false) - For development purposes, can be enabled for testing, but is not recommended otherwise.
+* cliEnabled (default: true) - Enable the command line interface. Can be disabled for background services, or test cases.
+ 
+
+
 ## Console & REST API
 
 A DPS Cluster Service has two interfaces, the console (stdio), and an HTTP REST API. The two interfaces are treated identical, as console input/output is piped over the REST API. The reason for the piping is that a DPS Cluster Service is intentionally designed to only support one version of the given service running at any one time, and the port binding is the resource constraint. This allows secondary services to act as console-only interfaces as they pipe all input/output over HTTP to the already running service that owns the port. This flow enables the CLI to background processes.
 The REST API is locked to a "accessKey" expected in the query string. The console automatically passes this key to the REST API, but for external REST API access, the key will need to be known.
 
-	{ cluster: { host: "localhost", port: 11987, accessKey: "lksjdf982734" } }
+	{ host: "localhost", port: 11987, accessKey: "lksjdf982734" }
 
-
-## Auto Restart
-
-By default, a worker (child) process that exits unexpectedly will be restarted. This can be configured to prevent processes from dieing too frequently, in the case the desired outcome is to fail completely if there is something seriously wrong with the workers.
-
-	{ cluster: { autoRestart: true, restartDelayMs: 100, restartsPerMinute: 10 } }
 
 
 ## Continuous Integration

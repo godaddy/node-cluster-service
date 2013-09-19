@@ -68,6 +68,7 @@ exports.stop = function(timeout, cb) {
 		}, "all", timeout);
 	} else { // gracefully shutdown
 		httpserver.close();
+		locals.state = 0;
 		if (cli) {
 			process.exit(1);
 		} else {
@@ -98,10 +99,6 @@ exports.on = function(eventName, cb, overwriteExisting) {
 };
 
 exports.trigger = function(eventName) {
-	if (locals.state === 0) {
-		throw new Error("Must be running");
-	}
-	
 	var evt = locals.events[eventName];
 	if (!evt) {
 		throw new Error("Event " + eventName + " not found");
@@ -156,6 +153,12 @@ Object.defineProperty(exports, "workers", {
 Object.defineProperty(exports, "options", {
 	get: function() {
 		return locals.options;
+	}
+});
+
+Object.defineProperty(exports, "locals", {
+	get: function() {
+		return locals;
 	}
 });
 
