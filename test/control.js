@@ -21,8 +21,9 @@ describe('Control', function(){
 	});
 
 	describe('setControls', function(){
-		it('should not throw', function(done){
-			assert.doesNotThrow(function(){control.setControls({"test" : "inproc"})}, "setControls should not throw.");
+		it('returns controls', function(done){
+			var controls = control.setControls({ "test" : "inproc" });
+			assert.equal(controls["test"], control.levels.inproc);
 			done();
 		});  
 	});
