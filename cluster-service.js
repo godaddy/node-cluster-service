@@ -24,18 +24,13 @@ var
 			restartDelayMs: 100,
 			allowHttpGet: false, // useful for testing -- not safe for production use
 			restartsPerMinute: 10, // not yet supported
-			cliEnabled: true,
-			controls: {
-				"shutdown": "local",
-				"exit": "local",
-				"workers": "remote"
-			}
+			cliEnabled: true
 		}
 	}
 ;
 
 exports.control = function(controls){
-	control.addControl(controls)
+	control.addControls(controls)
 };
 
 exports.start = function(workerPath, options, cb) {
@@ -98,6 +93,13 @@ exports.on = function(eventName, cb, overwriteExisting) {
 		cb: cb
 	};
 
+	// Adding control for this eventName
+	if (typeof cb.control === "function"){
+		controls = {};
+		controls[eventName] = cb.control();
+		control.addControls(controls);
+	}
+	
 	// overwrite existing, if any
 	locals.events[eventName] = evt;
 };
@@ -200,9 +202,6 @@ function startMaster(workerPath, options, cb) {
 		listener = function(err) {
 		};
 		
-		// Initialize the controls for authorization
-		control.setControls(options.controls);
-
 		/*process.on("uncaughtException", function(err) {
 			console.log("uncaughtException", util.inspect(err));
 		});*/
