@@ -70,6 +70,24 @@ The REST API is locked to a "accessKey" expected in the query string. The consol
 	{ host: "localhost", port: 11987, accessKey: "lksjdf982734" }
 
 
+## Access Control
+
+Commands may be granted "inproc" (no trust), "local" (low trust), or "remote" (default). Setting access control at compile time can be done within the command, like so:
+
+```javascript
+// exit.js
+module.exports.control = function(){
+	return "local";
+};
+```
+
+Or may be overriden at runtime via:
+
+```javascript
+// server.js
+require("cluster-service").control({ "exit": "local" });
+```
+
 
 ## Continuous Integration
 
