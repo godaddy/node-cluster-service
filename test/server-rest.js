@@ -18,7 +18,7 @@ describe('REST Server', function(){
 		httpclient.init(cservice.locals, extend(cservice.options, { accessKey: "123", silentMode: true }));
 		it('OK should be returned', function(done){
 			httpclient.execute("health", function(err, result) {
-				assert.equal(result, '"OK"', "Expected OK. result=" + result + ", err=" + err);
+				assert.equal(result, "'OK'", "Expected OK. result=" + result + ", err=" + err);
 				done();
 			}
 			);
