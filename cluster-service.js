@@ -5,6 +5,7 @@ var
 	util = require("util"),
 	path = require("path"),
 	httpserver = require("./lib/http-server"),
+	control = require("./lib/control"),
 	cli = null,
 	locals = {
 		events: {},
@@ -27,6 +28,10 @@ var
 		}
 	}
 ;
+
+exports.control = function(controls){
+	control.addControls(controls)
+};
 
 exports.start = function(workerPath, options, cb) {
 	options = extend(true, {}, locals.options, options);
@@ -88,6 +93,13 @@ exports.on = function(eventName, cb, overwriteExisting) {
 		cb: cb
 	};
 
+	// Adding control for this eventName
+	if (typeof cb.control === "function"){
+		controls = {};
+		controls[eventName] = cb.control();
+		control.addControls(controls);
+	}
+	
 	// overwrite existing, if any
 	locals.events[eventName] = evt;
 };
