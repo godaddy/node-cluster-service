@@ -116,7 +116,7 @@ Creating custom, or overriding commands and events is as simple as:
 	var cservice = require("cluster-service");
 	cservice.on("custom", function(evt, cb, arg1, arg2) { // "custom" command
 		// can also fire custom events
-		dpscluster.trigger("on.custom.complete", 1, 2, 3);
+		cservice.trigger("on.custom.complete", 1, 2, 3);
 	};
 	
 	cservice.on("test", function(evt, cb, testScript, timeout) { // we're overriding the "test" command
