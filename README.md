@@ -172,3 +172,8 @@ Run:
 Now you can view the coverage here:
 
 	coverage/lcov-report/index.html
+
+
+## License
+
+[MIT](https://github.com/godaddy/node-cluster-service/blob/master/LICENSE.txt)
