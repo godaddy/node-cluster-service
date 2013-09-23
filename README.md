@@ -7,6 +7,8 @@
 
 	npm install cluster-service
 
+https://npmjs.org/package/cluster-service
+
 
 ## What is it?
 
