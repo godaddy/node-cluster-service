@@ -4,7 +4,9 @@ var httpclient = require("../lib/http-client");
 var extend = require("extend");
 var request = require("request");
 
-describe('REST Server', function(){
+cservice.options.log = function() {};
+cservice.isWorker && it("WORKER", function(done) { });
+cservice.isMaster && describe('REST Server', function(){
 	describe('Start worker', function(){
 		it('0 workers should be running', function(done){
 			cservice.start(null,  { workerCount: 0, accessKey: "123", cliEnabled: false }, function() {

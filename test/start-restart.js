@@ -1,7 +1,9 @@
 var cservice = require("../cluster-service");
 var assert = require("assert");
 
-describe('Restart', function(){
+cservice.options.log = function() {};
+cservice.isWorker && it("WORKER", function(done) { });
+cservice.isMaster && describe('Restart', function(){
 	describe('Start workers', function(){
 		it('1 worker should be running', function(done){
 			cservice.start("./test/workers/basic",  { workerCount: 2, accessKey: "123", cliEnabled: false }, function() {

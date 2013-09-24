@@ -1,4 +1,3 @@
-var cservice = require("../cluster-service");
 var assert = require("assert");
 var util = require("../lib/util");
 
