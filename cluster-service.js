@@ -212,7 +212,6 @@ function startMaster(workerPath, options, cb) {
 		exports.on("shutdown", require("./lib/shutdown"), false);
 		exports.on("exit", require("./lib/exit"), false);
 		exports.on("help", require("./lib/help"), false);
-		exports.on("test", require("./lib/test"), false);
 		exports.on("upgrade", require("./lib/upgrade"), false);
 		exports.on("workers", require("./lib/workers"), false);
 		exports.on("health", require("./lib/health"), false);
