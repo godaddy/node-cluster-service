@@ -42,7 +42,7 @@ Now, with a few extra lines of code, you can add considerably resilience and cap
 
 	// worker.js
 	console.log("Hello World"); // notice we moved our original app logic to the worker
-	require("cluster-service").workerReady();
+	require("cluster-service").workerReady(); // this new line is required
 
 	
 
