@@ -12,10 +12,31 @@ cservice.isMaster && describe('Start & Stop', function(){
 	});  
 
 	it('Add 2nd worker', function(done){
-		cservice.start("./test/workers/basic",  { workerCount: 1, accessKey: "123", cliEnabled: false }, function() {
+		cservice.trigger("start", function(err, result) {
 			assert.equal(cservice.workers.length, 2, "2 workers expected, but " + cservice.workers.length + " found");
 			done();
-		});
+		}, "./test/workers/basic", "./", 1, 10000);
+	});
+
+	it('Timeout on new worker', function(done){
+		cservice.trigger("start", function(err, result) {
+			assert.equal(err, "timed out");
+			done();
+		}, "./test/workers/longInit", "./", 1, 1000);
+	});
+
+	it('Start help', function(done){
+		cservice.trigger("help", function(err, result) {
+			assert.equal(result.info, "Gracefully start service, one worker at a time.");
+			done();
+		}, "start");
+	});
+	
+	it('Bad worker start', function(done){
+		cservice.trigger("start", function(err, result) {			
+			assert.equal(err, "Invalid request. Try help start");
+			done();
+		}, null, "./", 0, 1000);
 	});
 	
 	it('Restart workers', function(done){
