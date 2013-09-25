@@ -38,7 +38,7 @@ if (cluster.isMaster === true) {
 }
 
 exports.control = function(controls){
-	control.addControls(controls)
+	control.addControls(controls);
 };
 
 exports.start = function(workerPath, options, masterCb) {
@@ -97,7 +97,7 @@ exports.on = function(eventName, cb, overwriteExisting) {
 
 	// Adding control for this eventName
 	if (typeof cb.control === "function"){
-		controls = {};
+		var controls = {};
 		controls[eventName] = cb.control();
 		control.addControls(controls);
 	}
