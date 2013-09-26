@@ -9,7 +9,7 @@
   "main": "./cluster-service.js",
   "scripts": {
     "test": "mocha --reporter min -t 10000",
-	"coverage": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
+	"coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
   },
   "dependencies": {
     "async": ">=0.2.x",
