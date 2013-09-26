@@ -154,11 +154,11 @@ Unit tests can be run using [nodeunit](https://github.com/caolan/nodeunit). You 
 Windows:
 
 	npm install mocha -g
-    npm test
+	npm test
 
 Everyone else:
 
-    npm test
+	npm test
 
 or individual tests...
 
@@ -169,9 +169,9 @@ or individual tests...
 
 Run:
 
-	node_modules\.bin\istanbul cover node_modules\mocha\bin\_mocha -- -u exports -R spec
+	npm run-script coverage
 
-Now you can view the coverage here:
+Now you can view coverage using any browser here:
 
 	coverage/lcov-report/index.html
 
