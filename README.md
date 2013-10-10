@@ -61,6 +61,7 @@ When initializing your service, there are a number of options that expose variou
 * restartsPerMinute (default: 10) - How many restarts are permitted by a worker in a minute before determining too critical to recover from.
 * allowHttpGet (default: false) - For development purposes, can be enabled for testing, but is not recommended otherwise.
 * cliEnabled (default: true) - Enable the command line interface. Can be disabled for background services, or test cases.
+* ssl - If provided, will bind using HTTPS by passing this object as the [TLS options](http://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener).
  
 
 
