@@ -44,7 +44,21 @@ Now, with a few extra lines of code, you can add considerably resilience and cap
 	console.log("Hello World"); // notice we moved our original app logic to the worker
 	require("cluster-service").workerReady(); // this new line is required
 
+
+
+## Talk to it
+
+Now that your service is resilient to worker failure, and utilizing all cores of your machine, lets talk to it.
+
+	restart all
+
+or for a full list of commands...
+
+	help
 	
+Check out Cluster Commands for more details.
+
+
 
 ## Start Options
 
