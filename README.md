@@ -165,7 +165,7 @@ Creating custom, or overriding commands and events is as simple as:
 
 ## Unit Tests
 
-Unit tests can be run using [nodeunit](https://github.com/caolan/nodeunit). You can run this shell command from the root of the project:
+Unit tests can be run using [mocha](https://github.com/visionmedia/mocha). You can run this shell command from the root of the project:
 
 	npm test
 	
@@ -176,7 +176,7 @@ Run:
 
 	npm run-script coverage
 
-Now you can view coverage using any browser here:
+View coverage details with any web browser:
 
 	coverage/lcov-report/index.html
 
