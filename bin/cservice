@@ -1,10 +1,3 @@
 #!/usr/bin/env node
 
-var argv = require("optimist").argv;
-
-var config;
-if ("config" in argv) {
-	config = argv.config;
-}
-
-require("../cluster-service").start(config, argv);
+require("../cluster-service").start();

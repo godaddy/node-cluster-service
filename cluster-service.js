@@ -48,6 +48,15 @@ exports.start = function(workerPath, options, masterCb) {
 		return;
 	}
 
+	if (arguments.length === 0) {
+		var argv = require("optimist").argv;
+
+		if ("config" in argv) {
+			workerPath = argv.config;
+			options = null;
+		}
+	}
+	
 	if (workerPath && typeof workerPath === "object") { // worker
 		masterCb = options;
 		options = workerPath;
