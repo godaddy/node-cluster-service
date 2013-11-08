@@ -47,9 +47,24 @@ exports.start = function(workerPath, options, masterCb) {
 		
 		return;
 	}
+
+	if (workerPath && typeof workerPath === "object") { // worker
+		masterCb = options;
+		options = workerPath;
+		workerPath = null;
+	}
+	options = options || {};
+	if (typeof workerPath === "string") { // legacy support, and configuration file support
+		if (path.extname(workerPath).toLowerCase() === ".json") {
+			options = JSON.parse(fs.readFileSync(workerPath));
+			workerPath = null;
+		} else {
+			options.workerPath = workerPath;
+		}
+	}
 	options = extend(true, {}, locals.options, options);
 
-	startMaster(workerPath, options, masterCb);
+	startMaster(options, masterCb);
 };
 
 exports.stop = function(timeout, cb) {
@@ -222,7 +237,7 @@ exports.newWorker = function(workerPath, cwd, options, cb) {
 	return worker;
 };
 
-function startMaster(workerPath, options, cb) {
+function startMaster(options, cb) {
 	options = options || {};
 	options.workerCount = options.workerCount || 1;
 
@@ -239,7 +254,7 @@ function startMaster(workerPath, options, cb) {
 		
 		// queue up our request
 		locals.startRequests.push(function() {
-			startMaster(workerPath, options, cb);
+			startMaster(options, cb);
 		});
 		
 		startListener(options, function(err) {
@@ -286,13 +301,13 @@ function startMaster(workerPath, options, cb) {
 		});
 	} else if (locals.state === 1) { // if still starting, queue requests
 		locals.startRequests.push(function() {
-			startMaster(workerPath, options, cb);
+			startMaster(options, cb);
 		});
-	} else if (locals.isAttached === false && typeof workerPath === "string") { // if we're NOT attached, we can spawn the workers now		
+	} else if (locals.isAttached === false && typeof options.workerPath === "string") { // if we're NOT attached, we can spawn the workers now		
 		// fork it, i'm out of here
 		var workersRemaining = options.workerCount;
 		for (var i = 0; i < options.workerCount; i++) {
-			exports.newWorker(workerPath, null, options, function() {
+			exports.newWorker(options.workerPath, null, options, function() {
 				workersRemaining--;
 				if (workersRemaining === 0) {
 					cb && cb();

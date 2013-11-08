@@ -163,20 +163,19 @@ Creating custom, or overriding commands and events is as simple as:
 	cservice.trigger("custom", function(err) { /* my callback */ }, "arg1value", "arg2value");
 
 
-## Unit Tests
+## Tests & Code Coverage
 
-Unit tests can be run using [mocha](https://github.com/visionmedia/mocha). You can run this shell command from the root of the project:
+Download and install:
+
+	git clone https://github.com/godaddy/node-cluster-service.git
+	cd node-cluster-service
+	npm install
+
+Now test:	
 
 	npm test
-	
 
-## Code Coverage
-
-Run:
-
-	npm run-script coverage
-
-View coverage details with any web browser:
+View code coverage in any browser:
 
 	coverage/lcov-report/index.html
 

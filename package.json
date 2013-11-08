@@ -1,6 +1,6 @@
 {
   "name": "cluster-service",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "author": {
     "name": "Aaron Silvas",
     "email": "asilvas@godaddy.com"
@@ -8,12 +8,12 @@
   "description": "Turns your single process code into a fault-resilient multi-process service with built-in REST & CLI support",
   "main": "./cluster-service.js",
   "scripts": {
-    "test": "mocha --reporter min -t 10000",
-    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
   },
   "dependencies": {
     "async": ">=0.2.x",
     "request": ">=2.21.0",
+	"optimist": ">=0.6.0",
     "extend": ">=1.1.x"
   },
   "devDependencies": {
@@ -29,6 +29,10 @@
   "bugs": {
     "url": "https://github.com/godaddy/node-cluster-service/issues"
   },
+  "bin": {
+    "cluster-service": "./bin/cservice",
+    "cservice": "./bin/cservice"
+  },
   "keywords": [
     "cluster",
     "service",
@@ -40,6 +44,7 @@
 	"master",
 	"child",
 	"process",
+	"monitor",
 	"monitoring",
 	"continous integration",
 	"healthcheck",
