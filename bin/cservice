@@ -2,6 +2,9 @@
 
 var argv = require("optimist").argv;
 
-console.dir(argv);
+var config;
+if ("config" in argv) {
+	config = argv.config;
+}
 
-require("../cluster-service").start(argv);
+require("../cluster-service").start(config, argv);
