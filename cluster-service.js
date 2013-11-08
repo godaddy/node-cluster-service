@@ -51,6 +51,7 @@ exports.start = function(workerPath, options, masterCb) {
 	if (arguments.length === 0) {
 		var argv = require("optimist").argv;
 
+		options = argv; // use command-line arguments instead
 		if ("config" in argv) {
 			workerPath = argv.config;
 			options = null;
