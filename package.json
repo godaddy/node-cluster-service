@@ -1,6 +1,6 @@
 {
   "name": "cluster-service",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "author": {
     "name": "Aaron Silvas",
     "email": "asilvas@godaddy.com"
@@ -30,8 +30,8 @@
     "url": "https://github.com/godaddy/node-cluster-service/issues"
   },
   "bin": {
-    "cluster-service": "./bin/cservice",
-    "cservice": "./bin/cservice"
+    "cluster-service": "./bin/cservice.js",
+    "cservice": "./bin/cservice.js"
   },
   "keywords": [
     "cluster",
