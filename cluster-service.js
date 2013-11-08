@@ -252,10 +252,6 @@ function startMaster(options, cb) {
 	options.workerCount = options.workerCount || 1;
 
 	if (locals.state === 0) { // one-time initializers
-		if (typeof options.accessKey !== "string") {
-			throw new Error("accessKey option is required");
-		}
-
 		locals.state = 1; // starting
 		
 		/*process.on("uncaughtException", function(err) {
@@ -369,6 +365,12 @@ function startWorker(cb) {
 }
 
 function startListener(options, cb) {
+	if (typeof options.accessKey !== "string") { // in-proc mode only
+		exports.options.log("cluster-service is in LOCAL ONLY MODE. Run with 'accessKey' option to enable communication channel.");
+		cb();
+		return;
+	}
+	
 	httpserver.init(locals, options, function(err) {
 		if (!err) {
 			exports.options.log("cluster-service is listening at " + options.host + ":" + options.port);

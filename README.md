@@ -66,16 +66,26 @@ When initializing your service, there are a number of options that expose variou
 
 	require("cluster-service").start(workerPath, { accessKey: "123" });
 
-* accessKey (*REQUIRED*) - A secret key that must be leveraged to invoke commands to your service. Allows CLI & REST interfaces.
-* restartonFailure (default: true) - When a worker stops unexpectedly, should it be automatically restarted?
-* host (default: "localhost") - Host to bind to for REST interface.
-* port (default: 11987) - Port to bind to. If you leverage more than one cluster-service on a machine, you'll want to assign unique ports.
-* workerCount (default: os.cpus().length) - Gives you control over the number of processes to run the same worker concurrently. Recommended to be 2 or more for fault resilience. But some workers do not impact availability, such as task queues, and can be run as a single instance.
+* accessKey - A secret key that must be specified if you wish to invoke commands to your service.
+  Allows CLI & REST interfaces.
+* restartonFailure (default: true) - When a worker stops unexpectedly, should it be automatically
+  restarted?
+* host (default: "localhost") - Host to bind to for REST interface. (Will only bind if accessKey
+  is provided)
+* port (default: 11987) - Port to bind to. If you leverage more than one cluster-service on a
+  machine, you'll want to assign unique ports. (Will only bind if accessKey is provided)
+* workerCount (default: os.cpus().length) - Gives you control over the number of processes to
+  run the same worker concurrently. Recommended to be 2 or more for fault resilience. But some
+  workers do not impact availability, such as task queues, and can be run as a single instance.
 * restartDelayMs (default: 100) - The delay between failure detection and restart.
-* restartsPerMinute (default: 10) - How many restarts are permitted by a worker in a minute before determining too critical to recover from.
-* allowHttpGet (default: false) - For development purposes, can be enabled for testing, but is not recommended otherwise.
-* cliEnabled (default: true) - Enable the command line interface. Can be disabled for background services, or test cases.
-* ssl - If provided, will bind using HTTPS by passing this object as the [TLS options](http://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener).
+* restartsPerMinute (default: 10) - How many restarts are permitted by a worker in a minute
+  before determining too critical to recover from.
+* allowHttpGet (default: false) - For development purposes, can be enabled for testing, but is
+  not recommended otherwise.
+* cliEnabled (default: true) - Enable the command line interface. Can be disabled for background
+  services, or test cases.
+* ssl - If provided, will bind using HTTPS by passing this object as the
+  [TLS options](http://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener).
  
 
 
