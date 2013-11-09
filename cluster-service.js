@@ -69,7 +69,7 @@ exports.start = function(workerPath, options, masterCb) {
 			options = JSON.parse(fs.readFileSync(workerPath));
 			workerPath = null;
 		} else {
-			options.workerPath = workerPath;
+			options.worker = workerPath;
 		}
 	}
 	options = extend(true, {}, locals.options, options);
@@ -285,7 +285,7 @@ function startMaster(options, cb) {
 					/*if (typeof (locals.reason) === "undefined" && worker.suicide !== true && options.restartOnFailure === true) {						
 						setTimeout(function() {
 							// lets replace lost worker.
-							exports.newWorker(worker.cservice.workerPath, null, options);
+							exports.newWorker(worker.cservice.worker, null, options);
 						}, options.restartDelayMs);
 					}*/
 				});
@@ -309,11 +309,11 @@ function startMaster(options, cb) {
 		locals.startRequests.push(function() {
 			startMaster(options, cb);
 		});
-	} else if (locals.isAttached === false && typeof options.workerPath === "string") { // if we're NOT attached, we can spawn the workers now		
+	} else if (locals.isAttached === false && typeof options.worker === "string") { // if we're NOT attached, we can spawn the workers now		
 		// fork it, i'm out of here
 		var workersRemaining = options.workerCount;
 		for (var i = 0; i < options.workerCount; i++) {
-			exports.newWorker(options.workerPath, null, options, function() {
+			exports.newWorker(options.worker, null, options, function() {
 				workersRemaining--;
 				if (workersRemaining === 0) {
 					cb && cb();
