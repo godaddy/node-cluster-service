@@ -38,7 +38,7 @@ Your existing application, be it console app or service of some kind:
 Now, with a few extra lines of code, you can add considerably resilience and capabilities to your existing services:
 
 	// server.js
-	require("cluster-service").start("./worker", { accessKey: "lksjdf982734" });
+	require("cluster-service").start({ worker: "./worker.js", accessKey: "lksjdf982734" });
 
 	// worker.js
 	console.log("Hello World"); // notice we moved our original app logic to the worker
@@ -64,8 +64,9 @@ Check out Cluster Commands for more details.
 
 When initializing your service, there are a number of options that expose various features:
 
-	require("cluster-service").start(workerPath, { accessKey: "123" });
+	require("cluster-service").start({ accessKey: "123" });
 
+* worker (default: "./worker.js")- Path of worker to start.
 * accessKey - A secret key that must be specified if you wish to invoke commands to your service.
   Allows CLI & REST interfaces.
 * restartonFailure (default: true) - When a worker stops unexpectedly, should it be automatically
@@ -140,10 +141,10 @@ While a Cluster Service may provide its own custom commands, below are provided 
 * shutdown all|pid [timeout:60] - Gracefully shutdown service, waiting up to timeout before terminating workers.
 * exit now - Forcefully exits the service.
 * help [cmd] - Get help.
-* test testScript [timeout:0] - (NOT YET IMPLEMENTED) A path to the test_script must be provided to perform tests against the code base within the given environment. If success (or failure) is not reported within the allotted timeout (in milliseconds, 0 for infinite), the test will be cancelled and considered a failure.
-* upgrade all|pid workerPath [cwd] [timeout:60] - Gracefully upgrade service, one worker at a time. (for continuous integration support).
+* upgrade all|pid workerPath [cwd] [timeout:60] - Gracefully upgrade service, one worker at a time. (continuous deployment support).
 * workers - Returns list of active worker processes.
 * health - Returns health of service. Can be overidden by service to expose app-specific data.
+* test testScript [timeout:0] - (NOT YET IMPLEMENTED) A path to the test_script must be provided to perform tests against the code base within the given environment. If success (or failure) is not reported within the allotted timeout (in milliseconds, 0 for infinite), the test will be cancelled and considered a failure.
 
 
 ## Cluster Events
