@@ -88,6 +88,8 @@ When initializing your service, there are a number of options that expose variou
   services, or test cases.
 * ssl - If provided, will bind using HTTPS by passing this object as the
   [TLS options](http://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener).
+* run (coming soon) - Ability to run a command, output result in json, and exit.
+* daemon (coming soon) - Spawn service as a background service.
  
 
 
