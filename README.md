@@ -117,7 +117,7 @@ require("cluster-service").control({ "exit": "local" });
 ```
 
 
-## Continuous Integration
+## Continuous Deployment
 
 Combining the Worker Process (Cluster) model with a CLI piped REST API enables the ability command the already-running service to replace existing workers with workers in a different location. This capability is still a work in progress, but initial tests are promising.
 
