@@ -64,11 +64,12 @@ Check out Cluster Commands for more details.
 
 When initializing your service, there are a number of options that expose various features:
 
-	require("cluster-service").start({ accessKey: "123" });
+	require("cluster-service").start({ worker: "worker.js", accessKey: "123" });
 
-* worker (default: "./worker.js")- Path of worker to start.
+* worker (default: "./worker.js") - Path of worker to start.
 * accessKey - A secret key that must be specified if you wish to invoke commands to your service.
   Allows CLI & REST interfaces.
+* config - A filename to the configuration to load. Useful to keep options from having to be inline.
 * restartonFailure (default: true) - When a worker stops unexpectedly, should it be automatically
   restarted?
 * host (default: "localhost") - Host to bind to for REST interface. (Will only bind if accessKey
