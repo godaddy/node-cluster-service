@@ -90,7 +90,10 @@ When initializing your service, there are a number of options that expose variou
   [TLS options](http://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener).
 * run (coming soon) - Ability to run a command, output result in json, and exit.
 * daemon (coming soon) - Spawn service as a background service.
- 
+* workerReady (coming soon) - If true, cservice will always wait for ```workerReady``` callback
+  indicating the service is online. Useful for services which you want to confirm operational instead
+  of assuming success. Option is preserved through restarts as well.
+
 
 
 ## Console & REST API
