@@ -88,9 +88,8 @@ When initializing your service, there are a number of options that expose variou
   services, or test cases.
 * ssl - If provided, will bind using HTTPS by passing this object as the
   [TLS options](http://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener).
-* run (coming soon) - Ability to run a command, output result in json, and exit.
-* daemon (coming soon) - Spawn service as a background service.
-* workerReady (coming soon) - If true, cservice will always wait for ```workerReady``` callback
+* run - Ability to run a command, output result in json, and exit.
+* workerReady (default: false) - If true, cservice will always wait for ```workerReady``` callback
   indicating the service is online. Useful for services which you want to confirm operational instead
   of assuming success. Option is preserved through restarts as well.
 
@@ -102,6 +101,10 @@ A DPS Cluster Service has two interfaces, the console (stdio), and an HTTP REST 
 The REST API is locked to a "accessKey" expected in the query string. The console automatically passes this key to the REST API, but for external REST API access, the key will need to be known.
 
 	{ host: "localhost", port: 11987, accessKey: "lksjdf982734" }
+
+Invoking the REST interface directly would look something like:
+
+	curl -d "" "http://localhost:11987/cli?cmd=help&accessKey=lksjdf982734"
 
 
 ## Access Control

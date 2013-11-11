@@ -1,5 +1,5 @@
 var cservice = require("../cluster-service");
-var workers = require('../lib/workers');
+var workers = require('../lib/commands/workers');
 var assert = require("assert");
 
 cservice.options.log = function() {};

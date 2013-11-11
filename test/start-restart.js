@@ -5,8 +5,8 @@ cservice.options.log = function() {};
 cservice.isWorker && it("WORKER", function(done) { });
 cservice.isMaster && describe('Restart', function(){
 	describe('Start workers', function(){
-		it('1 worker should be running', function(done){
-			cservice.start("./test/workers/basic",  { workerCount: 2, accessKey: "123", cliEnabled: false }, function() {
+		it('2 worker should be running', function(done){
+			cservice.start("./test/workers/basic",  { workerCount: 2, accessKey: "123", cliEnabled: false, workerReady: true }, function() {
 				assert.equal(cservice.workers.length, 2, "2 workers expected, but " + cservice.workers.length + " found");
 				done();
 			});

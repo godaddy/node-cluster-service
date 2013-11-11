@@ -1,4 +1,4 @@
-var cmd = require('../lib/help');
+var cmd = require('../lib/commands/help');
 var assert = require("assert");
 var cservice = require("../cluster-service");
 

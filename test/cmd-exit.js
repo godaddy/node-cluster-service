@@ -1,4 +1,4 @@
-var exit = require('../lib/exit');
+var exit = require('../lib/commands/exit');
 var assert = require("assert");
 
 describe('Exit cmd', function(){

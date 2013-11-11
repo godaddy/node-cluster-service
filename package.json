@@ -1,6 +1,6 @@
 {
   "name": "cluster-service",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "author": {
     "name": "Aaron Silvas",
     "email": "asilvas@godaddy.com"
@@ -8,7 +8,7 @@
   "description": "Turns your single process code into a fault-resilient multi-process service with built-in REST & CLI support",
   "main": "./cluster-service.js",
   "scripts": {
-    "test": "istanbul cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000"
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 -d"
   },
   "dependencies": {
     "async": ">=0.2.x",

@@ -1,4 +1,4 @@
-var cmd = require('../lib/health');
+var cmd = require('../lib/commands/health');
 var assert = require("assert");
 
 describe('Health cmd', function(){

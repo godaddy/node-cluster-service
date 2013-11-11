@@ -26,6 +26,8 @@ var
 			allowHttpGet: false, // useful for testing -- not safe for production use
 			restartsPerMinute: 10, // not yet supported
 			cliEnabled: true,
+			workerReady: false,
+			silent: false,
 			log: console.log
 		}
 	}
@@ -36,6 +38,8 @@ if (cluster.isMaster === true) {
 	httpserver = require("./lib/http-server");
 	control = require("./lib/control");
 }
+
+module.exports = exports;
 
 exports.control = function(controls){
 	control.addControls(controls);
@@ -52,9 +56,8 @@ exports.start = function(workerPath, options, masterCb) {
 		var argv = require("optimist").argv;
 
 		options = argv; // use command-line arguments instead
-		if ("config" in argv) {
-			workerPath = argv.config;
-			options = null;
+		if (options._ && options._.length > 0) {
+			options.run = options._[0];
 		}
 	}
 	
@@ -71,6 +74,9 @@ exports.start = function(workerPath, options, masterCb) {
 		} else {
 			options.worker = workerPath;
 		}
+	} else if ("config" in options) {
+		options = JSON.parse(fs.readFileSync(options.config));
+		workerPath = null;
 	}
 	options = extend(true, {}, locals.options, options);
 
@@ -135,14 +141,14 @@ if (cluster.isMaster === true && locals.firstTime === true) {
 	locals.firstTime = false;
 
 	// only register listeners if master
-	exports.on("start", require("./lib/start"), false);
-	exports.on("restart", require("./lib/restart"), false);
-	exports.on("shutdown", require("./lib/shutdown"), false);
-	exports.on("exit", require("./lib/exit"), false);
-	exports.on("help", require("./lib/help"), false);
-	exports.on("upgrade", require("./lib/upgrade"), false);
-	exports.on("workers", require("./lib/workers"), false);
-	exports.on("health", require("./lib/health"), false);
+	exports.on("start", require("./lib/commands/start"), false);
+	exports.on("restart", require("./lib/commands/restart"), false);
+	exports.on("shutdown", require("./lib/commands/shutdown"), false);
+	exports.on("exit", require("./lib/commands/exit"), false);
+	exports.on("help", require("./lib/commands/help"), false);
+	exports.on("upgrade", require("./lib/commands/upgrade"), false);
+	exports.on("workers", require("./lib/commands/workers"), false);
+	exports.on("health", require("./lib/commands/health"), false);
 	exports.on("workerStart", function(evt, pid, reason) {
 		exports.options.log("worker " + pid + " start, reason: " + (reason || locals.reason));
 	}, false);
@@ -240,9 +246,14 @@ exports.newWorker = function(workerPath, cwd, options, cb) {
 		// resolve if not absolute
 		workerPath = path.resolve(workerPath);
 	}
+	options = options || {};
 	var worker = cluster.fork({ "workerPath": workerPath, "cwd": (cwd || process.cwd()) });
-	worker.cservice = { workerReady: false, onWorkerStop: false, onWorkerReady: cb, workerPath: workerPath, options: options || {} };
+	worker.cservice = { workerReady: (options.workerReady === true ? false : true), onWorkerStop: false, onWorkerReady: cb, workerPath: workerPath, options: options };
 	worker.on("message", onMessageFromWorker);
+	if (worker.cservice.workerReady === true && typeof cb === "function") {
+		setTimeout(cb, 10); // if worker already ready (default), invoke cb now
+		// why async? to allow worker to be returned to caller
+	}
 	
 	return worker;
 };
@@ -272,7 +283,7 @@ function startMaster(options, cb) {
 			} else { // we're the single-master	
 				locals.isAttached = false;
 
-				cluster.setupMaster({ silent: false });
+				cluster.setupMaster({ silent: (options.silent === true) });
 				
 				cluster.on("online", function(worker) {
 					exports.trigger("workerStart", worker.process.pid);
