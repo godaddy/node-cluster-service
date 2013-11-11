@@ -21,6 +21,7 @@ var
 			port: 11987,
 			restartOnFailure: true,
 			restartDisabled: false,
+			worker: "./worker.js", // default worker to execute
 			workerCount: os.cpus().length,
 			restartDelayMs: 100,
 			allowHttpGet: false, // useful for testing -- not safe for production use
@@ -57,7 +58,11 @@ exports.start = function(workerPath, options, masterCb) {
 
 		options = argv; // use command-line arguments instead
 		if (options._ && options._.length > 0) {
-			options.run = options._[0];
+			if (path.extname(workerPath).toLowerCase() === ".js") { // if js file, use as worker
+				options.worker = options._[0];
+			} else { // otherwise assume it is a command to execute
+				options.run = options._[0];
+			}
 		}
 	}
 	
