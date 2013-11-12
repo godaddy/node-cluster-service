@@ -96,7 +96,7 @@ exports.start = function(workerPath, options, masterCb) {
 
 	if (options.run) {
 		require("./lib/run").start(options, function(err, result) {
-			process.kill(process.pid, "SIGKILL"); // exit by force
+			process.exit(1); // graceful exit
 		});
 	} else {	
 		require("./lib/master").start(options, masterCb);
