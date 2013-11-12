@@ -2,7 +2,7 @@ var cmd = require('../lib/commands/help');
 var assert = require("assert");
 var cservice = require("../cluster-service");
 
-cservice.options.log = function() {};
+cservice.log = function() {};
 cservice.isWorker && it("WORKER", function(done) { });
 cservice.isMaster && describe('Help cmd', function(){
 	it('Start', function(done){

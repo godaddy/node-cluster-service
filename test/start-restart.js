@@ -1,7 +1,7 @@
 var cservice = require("../cluster-service");
 var assert = require("assert");
 
-cservice.options.log = function() {};
+cservice.log = function() {};
 cservice.isWorker && it("WORKER", function(done) { });
 cservice.isMaster && describe('Restart', function(){
 	describe('Start workers', function(){

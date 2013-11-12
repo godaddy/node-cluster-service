@@ -60,6 +60,7 @@ exports.start = function(workerPath, options, masterCb) {
 				options.worker = options._[0];
 			} else { // otherwise assume it is a command to execute
 				options.run = options._[0];
+				options.cliEnabled = false;
 			}
 		}
 	}
@@ -159,12 +160,17 @@ if (cluster.isMaster === true && locals.firstTime === true) {
 	exports.on("workers", require("./lib/commands/workers"), false);
 	exports.on("health", require("./lib/commands/health"), false);
 	exports.on("workerStart", function(evt, pid, reason) {
-		exports.options.log("worker " + pid + " start, reason: " + (reason || locals.reason));
+		exports.log("worker " + pid + " start, reason: " + (reason || locals.reason));
 	}, false);
 	exports.on("workerExit", function(evt, pid, reason) {
-		exports.options.log("worker " + pid + " exited, reason: " + (reason || locals.reason));
+		exports.log("worker " + pid + " exited, reason: " + (reason || locals.reason));
 	}, false);
 }
+
+exports.log = function() {
+	locals.options.log &&
+		locals.options.log.apply(this, arguments);
+};
 
 exports.trigger = function(eventName) {
 	var evt = locals.events[eventName];
@@ -178,7 +184,7 @@ exports.trigger = function(eventName) {
 			args.push(arguments[i]);
 		}
 	}
-//exports.options.log("trigger." + eventName + ".args=" + args.length);
+//exports.log("trigger." + eventName + ".args=" + args.length);
 	// invoke event callback
 	return evt.cb.apply(null, args);
 };
