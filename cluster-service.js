@@ -15,13 +15,11 @@ var
 		isAttached: false, // attached to CLI over REST
 		workerReady: false,
 		onWorkerStop: true,
-		startRequests: [], // queued start requests
 		options: {
 			host: "localhost",
 			port: 11987,
 			restartOnFailure: true,
 			restartDisabled: false,
-			worker: "./worker.js", // default worker to execute
 			workerCount: os.cpus().length,
 			restartDelayMs: 100,
 			allowHttpGet: false, // useful for testing -- not safe for production use
@@ -72,7 +70,9 @@ exports.start = function(workerPath, options, masterCb) {
 		workerPath = null;
 	}
 	options = options || {};
-	if (typeof workerPath === "string") { // legacy support, and configuration file support
+	if (workerPath === null) { // NO worker option if explicit
+		options.worker = null;
+	} else if (typeof workerPath === "string") { // legacy support, and configuration file support
 		if (path.extname(workerPath).toLowerCase() === ".json") {
 			options = JSON.parse(fs.readFileSync(workerPath));
 			workerPath = null;
@@ -84,8 +84,12 @@ exports.start = function(workerPath, options, masterCb) {
 		workerPath = null;
 	}
 	options = extend(true, {}, locals.options, options);
+	if (typeof options.worker === "undefined") {
+		// only define default worker if worker is undefined (null is reserved for "no worker")
+		options.worker = "./worker.js"; // default worker to execute
+	}
 
-	startMaster(options, masterCb);
+	require("./lib/master").start(options, masterCb);
 };
 
 exports.stop = function(timeout, cb) {
@@ -263,83 +267,6 @@ exports.newWorker = function(workerPath, cwd, options, cb) {
 	return worker;
 };
 
-function startMaster(options, cb) {
-	options = options || {};
-	options.workerCount = options.workerCount || 1;
-
-	if (locals.state === 0) { // one-time initializers
-		locals.state = 1; // starting
-		
-		/*process.on("uncaughtException", function(err) {
-			exports.options.log("uncaughtException", util.inspect(err));
-		});*/
-		
-		// queue up our request
-		locals.startRequests.push(function() {
-			startMaster(options, cb);
-		});
-		
-		startListener(options, function(err) {
-			if (err) {
-				locals.isAttached = true;
-
-				// start the http client
-				require("./lib/http-client").init(locals, options);
-			} else { // we're the single-master	
-				locals.isAttached = false;
-
-				cluster.setupMaster({ silent: (options.silent === true) });
-				
-				cluster.on("online", function(worker) {
-					exports.trigger("workerStart", worker.process.pid);
-				});
-
-				cluster.on("exit", function(worker, code, signal) {
-					exports.trigger("workerExit", worker.process.pid);
-
-					// do not restart if there is a reason, or disabled
-					/*if (typeof (locals.reason) === "undefined" && worker.suicide !== true && options.restartOnFailure === true) {						
-						setTimeout(function() {
-							// lets replace lost worker.
-							exports.newWorker(worker.cservice.worker, null, options);
-						}, options.restartDelayMs);
-					}*/
-				});
-
-				if (options.cliEnabled === true) {
-					// wire-up CLI
-					cli = require("./lib/cli");
-					cli.init(locals, options);
-				}
-			}
-
-			locals.state = 2; // running
-
-			// now that listener is ready, process queued start requests
-			for (var i = 0; i < locals.startRequests.length; i++) {
-				locals.startRequests[i](); // execute
-			}
-			locals.startRequests = [];
-		});
-	} else if (locals.state === 1) { // if still starting, queue requests
-		locals.startRequests.push(function() {
-			startMaster(options, cb);
-		});
-	} else if (locals.isAttached === false && typeof options.worker === "string") { // if we're NOT attached, we can spawn the workers now		
-		// fork it, i'm out of here
-		var workersRemaining = options.workerCount;
-		for (var i = 0; i < options.workerCount; i++) {
-			exports.newWorker(options.worker, null, options, function() {
-				workersRemaining--;
-				if (workersRemaining === 0) {
-					cb && cb();
-				}
-			});
-		}
-	} else { // nothing else to do
-		cb && cb();
-	}
-}
 
 function onMessageFromWorker(msg) {
 	var worker = this;
@@ -372,28 +299,6 @@ function onMessageFromMaster(msg) {
 			}
 		break;
 	};
-}
-
-function startWorker(cb) {
-	cluster.worker.module = require(process.env.workerPath);
-
-	cb && cb();
-}
-
-function startListener(options, cb) {
-	if (typeof options.accessKey !== "string") { // in-proc mode only
-		exports.options.log("cluster-service is in LOCAL ONLY MODE. Run with 'accessKey' option to enable communication channel.");
-		cb();
-		return;
-	}
-	
-	httpserver.init(locals, options, function(err) {
-		if (!err) {
-			exports.options.log("cluster-service is listening at " + options.host + ":" + options.port);
-		}
-
-		cb(err);	
-	});
 }
 
 if (cluster.isWorker === true && typeof (cluster.worker.module) === "undefined") {

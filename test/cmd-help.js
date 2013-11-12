@@ -6,7 +6,7 @@ cservice.options.log = function() {};
 cservice.isWorker && it("WORKER", function(done) { });
 cservice.isMaster && describe('Help cmd', function(){
 	it('Start', function(done){
-		cservice.start(null,  { workerCount: 1, accessKey: "123", cliEnabled: false }, function() {
+		cservice.start({ worker: null, workerCount: 1, accessKey: "123", cliEnabled: false }, function() {
 			assert.equal(cservice.workers.length, 0, "0 worker expected, but " + cservice.workers.length + " found");
 			done();
 		});
