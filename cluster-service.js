@@ -27,7 +27,8 @@ var
 			cliEnabled: true,
 			workerReady: false,
 			silent: false,
-			log: console.log
+			log: console.log,
+			error: console.error
 		}
 	}
 ;
@@ -56,8 +57,11 @@ exports.start = function(workerPath, options, masterCb) {
 
 		options = argv; // use command-line arguments instead
 		if (options._ && options._.length > 0) {
-			if (path.extname(workerPath).toLowerCase() === ".js") { // if js file, use as worker
+			var ext = path.extname(options._[0]).toLowerCase();
+			if (ext === ".js") { // if js file, use as worker
 				options.worker = options._[0];
+			} else if (ext === ".json") { // if json file, use as config
+				options.config = options._[0];
 			} else { // otherwise assume it is a command to execute
 				options.run = options._[0];
 				options.cliEnabled = false;
@@ -84,13 +88,19 @@ exports.start = function(workerPath, options, masterCb) {
 		options = JSON.parse(fs.readFileSync(options.config));
 		workerPath = null;
 	}
-	options = extend(true, {}, locals.options, options);
+	locals.options = options = extend(true, {}, locals.options, options);
 	if (typeof options.worker === "undefined") {
 		// only define default worker if worker is undefined (null is reserved for "no worker")
 		options.worker = "./worker.js"; // default worker to execute
 	}
 
-	require("./lib/master").start(options, masterCb);
+	if (options.run) {
+		require("./lib/run").start(options, function(err, result) {
+			process.kill(process.pid, "SIGKILL"); // exit by force
+		});
+	} else {	
+		require("./lib/master").start(options, masterCb);
+	}
 };
 
 exports.stop = function(timeout, cb) {
@@ -170,6 +180,17 @@ if (cluster.isMaster === true && locals.firstTime === true) {
 }
 
 exports.log = function() {
+	locals.options.cliEnabled === true &&
+	locals.options.log &&
+		locals.options.log.apply(this, arguments);
+};
+
+exports.error = function() {
+	locals.options.error &&
+		locals.options.error.apply(this, arguments);
+};
+
+exports.results = function() {
 	locals.options.log &&
 		locals.options.log.apply(this, arguments);
 };

@@ -35,29 +35,43 @@ Your existing application, be it console app or service of some kind:
 	// server.js
 	console.log("Hello World");
 
-Now, with a few extra lines of code, you can add considerably resilience and capabilities to your existing services:
+Now, with a small addition of code, you can add considerably resilience and capabilities to your existing services:
 
 	// server.js
 	require("cluster-service").start({ worker: "./worker.js", accessKey: "lksjdf982734" });
 
 	// worker.js
 	console.log("Hello World"); // notice we moved our original app logic to the worker
-	require("cluster-service").workerReady(); // this new line is required
 
+Or better yet, install ```cluster-service``` globally for stand-alone usage. No new code required:
+
+	npm install -g cluster-service
+	cservice "server.js" --accessKey "lksjdf982734"
 
 
 ## Talk to it
 
 Now that your service is resilient to worker failure, and utilizing all cores of your machine, lets talk to it.
+With your service running, type into the command-line:
 
 	restart all
 
 or for a full list of commands...
 
 	help
+
+or for help on a specific command:
+
+	help {command}
 	
 Check out Cluster Commands for more details.
 
+We can also issue commands from a seperate process, or even a remote machine (assuming proper access):
+
+	npm install -g cluster-service
+	cservice "restart all" --accessKey "my_access_key"
+
+This will output raw json, which can be parsed and processed by the caller.
 
 
 ## Start Options
@@ -106,6 +120,12 @@ Invoking the REST interface directly would look something like:
 
 	curl -d "" "http://localhost:11987/cli?cmd=help&accessKey=lksjdf982734"
 
+Or better yet, use the ```run``` option to do the work for you:
+
+	cservice "help" --accessKey "lksjdf982734"
+	// same as
+	cservice --run "help" --accessKey "lksjdf982734"
+	
 
 ## Access Control
 
