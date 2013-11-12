@@ -186,6 +186,7 @@ exports.log = function() {
 };
 
 exports.error = function() {
+	locals.options.cliEnabled === true &&
 	locals.options.error &&
 		locals.options.error.apply(this, arguments);
 };
