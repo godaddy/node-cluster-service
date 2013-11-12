@@ -31,7 +31,8 @@
   },
   "bin": {
     "cluster-service": "./bin/cservice",
-    "cservice": "./bin/cservice"
+    "cservice": "./bin/cservice",
+    "cserviced": "./bin/cserviced"
   },
   "keywords": [
     "cluster",
