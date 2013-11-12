@@ -159,6 +159,8 @@ if (cluster.isMaster === true && locals.firstTime === true) {
 	exports.on("upgrade", require("./lib/commands/upgrade"), false);
 	exports.on("workers", require("./lib/commands/workers"), false);
 	exports.on("health", require("./lib/commands/health"), false);
+	exports.on("version", require("./lib/commands/version"), false);
+	exports.on("v", require("./lib/commands/version"), false);
 	exports.on("workerStart", function(evt, pid, reason) {
 		exports.log("worker " + pid + " start, reason: " + (reason || locals.reason));
 	}, false);
