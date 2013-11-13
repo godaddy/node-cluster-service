@@ -198,11 +198,16 @@ if (cluster.isMaster === true && locals.firstTime === true) {
 
 exports.debug = function () {
     if (locals.options.cliEnabled === true && locals.options.debug) {
-        var args = arguments;
+        var args = Array.prototype.slice.call(arguments);
         for (var i = 0; i < args.length; i++) {
             if (typeof args[i] === "string") {
                 args[i] = args[i].debug;
             }
+        }
+        if (args.length > 0 && typeof args[0] === "string" && args[0][0] === "{") {
+            locals.options.debug("cservice:".cservice);
+        } else {
+            args = ["cservice: ".cservice].concat(args);
         }
         locals.options.debug.apply(this, args);
     }
@@ -210,11 +215,11 @@ exports.debug = function () {
 
 exports.log = function () {
     if (locals.options.cliEnabled === true && locals.options.log) {
-        var args = arguments;
-        if (arguments.length > 0 && typeof arguments[0] === "string" && arguments[0][0] === "{") {
+        var args = Array.prototype.slice.call(arguments);
+        if (args.length > 0 && typeof args[0] === "string" && args[0][0] === "{") {
             locals.options.log("cservice:".cservice);
         } else {
-            args = ["cservice: ".cservice].concat(Array.prototype.slice.call(arguments));
+            args = ["cservice: ".cservice].concat(args);
         }
         locals.options.log.apply(this, args);
 	}
@@ -222,13 +227,18 @@ exports.log = function () {
 
 exports.error = function() {
 	if (locals.options.cliEnabled === true && locals.options.error) {
-		var args = arguments;
-		for (var i = 0; i < args.length; i++) {
+	    var args = Array.prototype.slice.call(arguments);
+	    for (var i = 0; i < args.length; i++) {
 			if (typeof args[i] === "string") {
 				args[i] = args[i].error;
 			}
 		}
-		locals.options.error.apply(this, args);
+	    if (args.length > 0 && typeof args[0] === "string" && args[0][0] === "{") {
+	        locals.options.error("cservice:".cservice);
+	    } else {
+	        args = ["cservice: ".cservice].concat(args);
+	    }
+	    locals.options.error.apply(this, args);
 	}
 };
 
