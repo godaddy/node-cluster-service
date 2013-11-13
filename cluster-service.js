@@ -29,7 +29,18 @@ var
 			workerReady: false,
 			silent: false,
 			log: console.log,
+			error: console.error,
+			debug: console.debug,
 			json: false, // output as JSON
+			colors: {
+			    cservice: "grey",
+			    success: "green",
+			    error: "red",
+			    data: "cyan",
+			    warn: "yellow",
+			    info: "magenta",
+                debug: "grey"
+			},
 			error: console.error
 		}
 	}
@@ -65,8 +76,10 @@ exports.start = function(workerPath, options, masterCb) {
 			} else if (ext === ".json") { // if json file, use as config
 				options.config = options._[0];
 			} else { // otherwise assume it is a command to execute
-				options.run = options._[0];
-				options.cliEnabled = false;
+			    options.run = options._[0];
+			    if (options.json === true) {
+			        options.cliEnabled = false;
+			    }
 			}
 		}
 	}
@@ -95,6 +108,8 @@ exports.start = function(workerPath, options, masterCb) {
 		// only define default worker if worker is undefined (null is reserved for "no worker")
 		options.worker = "./worker.js"; // default worker to execute
 	}
+
+	colors.setTheme(options.colors);
 
 	if (options.run) {
 		require("./lib/run").start(options, function(err, result) {
@@ -174,16 +189,34 @@ if (cluster.isMaster === true && locals.firstTime === true) {
 	exports.on("version", require("./lib/commands/version"), false);
 	exports.on("v", require("./lib/commands/version"), false);
 	exports.on("workerStart", function(evt, pid, reason) {
-		exports.log(("worker " + pid.cyan + " start, reason: " + (reason || locals.reason)).green);
+		exports.log(("worker " + pid.data + " start, reason: " + (reason || locals.reason)).success);
 	}, false);
 	exports.on("workerExit", function(evt, pid, reason) {
-		exports.log(("worker " + pid.cyan + " exited, reason: " + (reason || locals.reason)).yellow);
+		exports.log(("worker " + pid.data + " exited, reason: " + (reason || locals.reason)).warn);
 	}, false);
 }
 
-exports.log = function() {
-	if (locals.options.cliEnabled === true && locals.options.log) {
-		locals.options.log.apply(this, arguments);
+exports.debug = function () {
+    if (locals.options.cliEnabled === true && locals.options.debug) {
+        var args = arguments;
+        for (var i = 0; i < args.length; i++) {
+            if (typeof args[i] === "string") {
+                args[i] = args[i].debug;
+            }
+        }
+        locals.options.debug.apply(this, args);
+    }
+};
+
+exports.log = function () {
+    if (locals.options.cliEnabled === true && locals.options.log) {
+        var args = arguments;
+        if (arguments.length > 0 && typeof arguments[0] === "string" && arguments[0][0] === "{") {
+            locals.options.log("cservice:".cservice);
+        } else {
+            args = ["cservice: ".cservice].concat(Array.prototype.slice.call(arguments));
+        }
+        locals.options.log.apply(this, args);
 	}
 };
 
@@ -192,7 +225,7 @@ exports.error = function() {
 		var args = arguments;
 		for (var i = 0; i < args.length; i++) {
 			if (typeof args[i] === "string") {
-				args[i] = args[i].red;
+				args[i] = args[i].error;
 			}
 		}
 		locals.options.error.apply(this, args);
