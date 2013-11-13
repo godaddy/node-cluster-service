@@ -4,6 +4,7 @@ var
 	os = require("os"),
 	util = require("util"),
 	path = require("path"),
+	colors = require("colors"),
 	httpserver = null,
 	control = null,
 	cli = null,
@@ -28,6 +29,7 @@ var
 			workerReady: false,
 			silent: false,
 			log: console.log,
+			json: false, // output as JSON
 			error: console.error
 		}
 	}
@@ -172,23 +174,29 @@ if (cluster.isMaster === true && locals.firstTime === true) {
 	exports.on("version", require("./lib/commands/version"), false);
 	exports.on("v", require("./lib/commands/version"), false);
 	exports.on("workerStart", function(evt, pid, reason) {
-		exports.log("worker " + pid + " start, reason: " + (reason || locals.reason));
+		exports.log(("worker " + pid.cyan + " start, reason: " + (reason || locals.reason)).green);
 	}, false);
 	exports.on("workerExit", function(evt, pid, reason) {
-		exports.log("worker " + pid + " exited, reason: " + (reason || locals.reason));
+		exports.log(("worker " + pid.cyan + " exited, reason: " + (reason || locals.reason)).yellow);
 	}, false);
 }
 
 exports.log = function() {
-	locals.options.cliEnabled === true &&
-	locals.options.log &&
+	if (locals.options.cliEnabled === true && locals.options.log) {
 		locals.options.log.apply(this, arguments);
+	}
 };
 
 exports.error = function() {
-	locals.options.cliEnabled === true &&
-	locals.options.error &&
-		locals.options.error.apply(this, arguments);
+	if (locals.options.cliEnabled === true && locals.options.error) {
+		var args = arguments;
+		for (var i = 0; i < args.length; i++) {
+			if (typeof args[i] === "string") {
+				args[i] = args[i].red;
+			}
+		}
+		locals.options.error.apply(this, args);
+	}
 };
 
 exports.results = function() {

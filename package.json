@@ -1,6 +1,6 @@
 {
   "name": "cluster-service",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "author": {
     "name": "Aaron Silvas",
     "email": "asilvas@godaddy.com"
@@ -14,6 +14,7 @@
     "async": ">=0.2.x",
     "request": ">=2.21.0",
 	"optimist": ">=0.6.0",
+	"colors": ">=0.6.2",
     "extend": ">=1.1.x"
   },
   "devDependencies": {

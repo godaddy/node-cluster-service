@@ -25,7 +25,7 @@ cservice.isMaster && describe('REST Server', function(){
 
 	it('Bad command', function(done){
 		httpclient.execute("x98s7df987sdf", function(err, result) {
-			assert.equal(result, "Not found. Try /help", "Expected 'Not found. Try /help'. result=" + result + ", err=" + err);
+			assert.equal(err, "Not found. Try /help", "Expected 'Not found. Try /help'. result=" + result + ", err=" + err);
 			done();
 		}
 		);
