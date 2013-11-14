@@ -1,7 +1,7 @@
 var cmd = require('../lib/commands/version');
 var assert = require("assert");
 
-describe('Version cmd', function(){
+describe('[Version cmd]', function(){
 	it('Get version', function(done){
 		var pkg = require("../package.json");
 		var evt = {};

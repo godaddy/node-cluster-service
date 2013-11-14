@@ -4,9 +4,9 @@ var cservice = require("../cluster-service");
 
 cservice.log = function() {};
 cservice.isWorker && it("WORKER", function(done) { });
-cservice.isMaster && describe('Help cmd', function(){
+cservice.isMaster && describe('[Help cmd]', function(){
 	it('Start', function(done){
-		cservice.start({ worker: null, workerCount: 1, accessKey: "123", cliEnabled: false }, function() {
+		cservice.start({ workers: null, workerCount: 1, accessKey: "123", cli: false }, function() {
 			assert.equal(cservice.workers.length, 0, "0 worker expected, but " + cservice.workers.length + " found");
 			done();
 		});

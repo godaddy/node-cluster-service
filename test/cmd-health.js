@@ -1,7 +1,7 @@
 var cmd = require('../lib/commands/health');
 var assert = require("assert");
 
-describe('Health cmd', function(){
+describe('[Health cmd]', function(){
 	it('Issue command', function(done){
         cmd({}, function(nullObj, data){
             assert.equal(nullObj, null);

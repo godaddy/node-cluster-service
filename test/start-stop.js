@@ -3,9 +3,10 @@ var assert = require("assert");
 
 cservice.log = function() {};
 cservice.isWorker && it("WORKER", function(done) { });
-cservice.isMaster && describe('Start & Stop', function(){
+cservice.isMaster && describe('[Start & Stop]', function(){
 	it('Start worker', function(done){
-		cservice.start("./test/workers/basic", { workerCount: 1, accessKey: "123", cliEnabled: false, workerReady: true }, function() {
+		assert.equal(cservice.workers.length, 0, "0 workers expected, but " + cservice.workers.length + " found");
+		cservice.start({ workers: { basic: { worker: "./test/workers/basic", count: 1 } }, accessKey: "123", cli: false }, function() {
 			assert.equal(cservice.workers.length, 1, "1 worker expected, but " + cservice.workers.length + " found");
 			done();
 		});
@@ -15,14 +16,14 @@ cservice.isMaster && describe('Start & Stop', function(){
 		cservice.trigger("start", function(err, result) {
 			assert.equal(cservice.workers.length, 2, "2 workers expected, but " + cservice.workers.length + " found");
 			done();
-		}, "./test/workers/basic", { workerCount: 1, timeout: 10000 });
+		}, "./test/workers/basic", { ready: false, count: 1, timeout: 10000 });
 	});
 
 	it('Timeout on new worker', function(done){
 		cservice.trigger("start", function(err, result) {
 			assert.equal(err, "timed out");
 			done();
-		}, "./test/workers/longInit", { workerReady: true, workerCount: 1, timeout: 1000 });
+		}, "./test/workers/longInit", { ready: false, count: 1, timeout: 1000 });
 	});
 
 	it('Start help', function(done){
@@ -36,7 +37,7 @@ cservice.isMaster && describe('Start & Stop', function(){
 		cservice.trigger("start", function(err, result) {			
 			assert.equal(err, "Invalid request. Try help start");
 			done();
-		}, null, { workerCount: 1, timeout: 1000 });
+		}, null, { count: 1, timeout: 1000 });
 	});
 	
 	it('Restart workers', function(done){
@@ -51,7 +52,7 @@ cservice.isMaster && describe('Start & Stop', function(){
 		cservice.trigger("upgrade", function() {
 			assert.equal(cservice.workers.length, 2, "2 workers expected, but " + cservice.workers.length + " found");
 			done();
-		}, "all", "./test/workers/basic2"
+		}, "all", "./test/workers/basic2", { ready: false }
 		);
 	});
 

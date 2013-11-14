@@ -2,4 +2,6 @@ var
 	cservice = require("../../cluster-service")
 ;
 
-cservice.workerReady();
+setTimeout(function() {
+	cservice.workerReady();
+}, 100);

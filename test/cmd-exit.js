@@ -1,7 +1,7 @@
 var exit = require('../lib/commands/exit');
 var assert = require("assert");
 
-describe('Exit cmd', function(){
+describe('[Exit cmd]', function(){
 	it('Invalid request if cmd not equal to now', function(done){
 		var evt = {};
 		var cmd = "Not now";

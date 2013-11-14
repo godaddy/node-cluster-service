@@ -16,17 +16,17 @@ var
 		isAttached: false, // attached to CLI over REST
 		workerReady: false,
 		onWorkerStop: true,
+		restartOnFailure: true,
 		options: {
 			host: "localhost",
 			port: 11987,
-			restartOnFailure: true,
-			restartDisabled: false,
+			accessKey: undefined,
+			workers: undefined,
 			workerCount: os.cpus().length,
 			restartDelayMs: 100,
 			allowHttpGet: false, // useful for testing -- not safe for production use
 			restartsPerMinute: 10, // not yet supported
-			cliEnabled: true,
-			workerReady: false,
+			cli: true,
 			silent: false,
 			log: console.log,
 			error: console.error,
@@ -58,7 +58,7 @@ exports.control = function(controls){
 	control.addControls(controls);
 };
 
-exports.start = function(workerPath, options, masterCb) {
+exports.start = function(options, masterCb) {
 	if (cluster.isWorker === true) {
 		// ignore starts if not master. do NOT invoke masterCb, as that is reserved for master callback
 		
@@ -72,45 +72,34 @@ exports.start = function(workerPath, options, masterCb) {
 		if (options._ && options._.length > 0) {
 			var ext = path.extname(options._[0]).toLowerCase();
 			if (ext === ".js") { // if js file, use as worker
-				options.worker = options._[0];
+				options.workers = options._[0];
 			} else if (ext === ".json") { // if json file, use as config
 				options.config = options._[0];
 			} else { // otherwise assume it is a command to execute
 			    options.run = options._[0];
 			    if (options.json === true) {
-			        options.cliEnabled = false;
+			        options.cli = false;
 			    }
 			}
 		}
 	}
 	
-	if (workerPath && typeof workerPath === "object") { // worker
-		masterCb = options;
-		options = workerPath;
-		workerPath = null;
-	}
 	options = options || {};
-	if (workerPath === null) { // NO worker option if explicit
-		options.worker = null;
-	} else if (typeof workerPath === "string") { // legacy support, and configuration file support
-		if (path.extname(workerPath).toLowerCase() === ".json") {
-			options = JSON.parse(fs.readFileSync(workerPath));
-			workerPath = null;
-		} else {
-			options.worker = workerPath;
-		}
-	} else if ("config" in options) {
+	if ("config" in options) {
 		options = JSON.parse(fs.readFileSync(options.config));
 		workerPath = null;
 	}
-	locals.options = options = extend(true, {}, locals.options, options);
-	if (typeof options.worker === "undefined") {
+	delete locals.options.workers; // always replace workers, not extend it
+	locals.options = options = extend(true, locals.options, options);
+	if (typeof options.workers === "undefined") {
 		// only define default worker if worker is undefined (null is reserved for "no worker")
-		options.worker = "./worker.js"; // default worker to execute
+		options.workers = "./worker.js"; // default worker to execute
 	}
-
+	
 	colors.setTheme(options.colors);
 
+	require("./lib/legacy");
+	
 	if (options.run) {
 		require("./lib/run").start(options, function(err, result) {
 			process.exit(1); // graceful exit
@@ -197,7 +186,7 @@ if (cluster.isMaster === true && locals.firstTime === true) {
 }
 
 exports.debug = function () {
-    if (locals.options.cliEnabled === true && locals.options.debug) {
+    if (locals.options.cli === true && locals.options.debug) {
         var args = Array.prototype.slice.call(arguments);
         for (var i = 0; i < args.length; i++) {
             if (typeof args[i] === "string") {
@@ -214,7 +203,7 @@ exports.debug = function () {
 };
 
 exports.log = function () {
-    if (locals.options.cliEnabled === true && locals.options.log) {
+    if (locals.options.cli === true && locals.options.log) {
         var args = Array.prototype.slice.call(arguments);
         if (args.length > 0 && typeof args[0] === "string" && args[0][0] === "{") {
             locals.options.log("cservice:".cservice);
@@ -226,7 +215,7 @@ exports.log = function () {
 };
 
 exports.error = function() {
-	if (locals.options.cliEnabled === true && locals.options.error) {
+	if (locals.options.cli === true && locals.options.error) {
 	    var args = Array.prototype.slice.call(arguments);
 	    for (var i = 0; i < args.length; i++) {
 			if (typeof args[i] === "string") {
@@ -282,7 +271,7 @@ exports.workerReady = function(options) {
 	process.on("message", onMessageFromMaster);
 
 	// allow worker to inform the master when ready to speed up initialization	
-	process.send({ cservice: { cmd: "workerReady", onWorkerStop: (typeof options.onWorkerStop === "function") } });
+	process.send({ cservice: { cmd: "workerReady", onStop: (typeof options.onWorkerStop === "function") } });
 };
 
 Object.defineProperty(exports, "workers", {
@@ -323,26 +312,29 @@ Object.defineProperty(exports, "locals", {
 	}
 });
 
-exports.newWorker = function(workerPath, cwd, options, cb) {
-	if (typeof options === "function") {
-		cb = options;
-		options = {};
-	}
-	if (typeof cb !== "function") {
-		throw new Error("Callback required");
-	}
-	workerPath = workerPath || "./worker";
-	if (workerPath.indexOf(".") === 0 || (workerPath.indexOf("//") !== 0 && workerPath.indexOf(":\\") < 0)) {
+exports.newWorker = function(options, cb) {
+	options = extend(true, {}, {
+		worker: "./worker.js",
+		ready: true,
+		count: undefined,
+		restart: true,
+		cwd: undefined,
+		onStop: false
+	}, options);
+	if (options.worker.indexOf(".") === 0 || (options.worker.indexOf("//") !== 0 && options.worker.indexOf(":\\") < 0)) {
 		// resolve if not absolute
-		workerPath = path.resolve(workerPath);
+		options.worker = path.resolve(options.worker);
 	}
-	options = options || {};
-	var worker = cluster.fork({ "workerPath": workerPath, "cwd": (cwd || process.cwd()) });
-	worker.cservice = { workerReady: (options.workerReady === true ? false : true), onWorkerStop: false, onWorkerReady: cb, workerPath: workerPath, options: options };
+	options.cwd = options.cwd || process.cwd();
+	options.onReady = cb;
+	if (options.wasReady === false) {
+		options.ready = false; // preserve preference between restarts, etc
+	}	
+	var worker = cluster.fork(options);
+	worker.cservice = options;
 	worker.on("message", onMessageFromWorker);
-	if (worker.cservice.workerReady === true && typeof cb === "function") {
-		setTimeout(cb, 10); // if worker already ready (default), invoke cb now
-		// why async? to allow worker to be returned to caller
+	if (worker.cservice.ready === true && typeof cb === "function") {
+		cb(null, worker);
 	}
 	
 	return worker;
@@ -357,10 +349,11 @@ function onMessageFromWorker(msg) {
 	
 	switch (msg.cservice.cmd) {
 		case "workerReady":
-			if (worker.cservice.workerReady === false) {
-				worker.cservice.workerReady = true;
-				worker.cservice.onWorkerStop = (msg.cservice.onWorkerStop === true);
-				worker.cservice.onWorkerReady && worker.cservice.onWorkerReady();
+			if (worker.cservice.ready === false) {
+				worker.cservice.wasReady = false; // preserve preference between restarts, etc
+				worker.cservice.ready = true;
+				worker.cservice.onStop = (msg.cservice.onStop === true);
+				worker.cservice.onReady && worker.cservice.onReady(null, worker);
 			}
 		break;
 	};
@@ -384,5 +377,5 @@ function onMessageFromMaster(msg) {
 
 if (cluster.isWorker === true && typeof (cluster.worker.module) === "undefined") {
 	// load the worker if not already loaded
-	cluster.worker.module = require(process.env.workerPath);
+	cluster.worker.module = require(process.env.worker);
 }

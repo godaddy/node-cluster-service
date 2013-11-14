@@ -6,9 +6,9 @@ var request = require("request");
 
 cservice.log = function() {};
 cservice.isWorker && it("WORKER", function(done) { });
-cservice.isMaster && describe('REST Server', function(){
+cservice.isMaster && describe('[REST Server]', function(){
 	it('Start worker', function(done){
-		cservice.start(null,  { workerCount: 0, accessKey: "123", cliEnabled: false }, function() {
+		cservice.start({ workers: null, workerCount: 0, accessKey: "123", cli: false }, function() {
 			assert.equal(cservice.workers.length, 0, "0 worker expected, but " + cservice.workers.length + " found");
 			done();
 		});
