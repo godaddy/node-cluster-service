@@ -42,14 +42,14 @@ Leveraging ```cluster-service``` without adding a line of code:
 
 This can be done without a global install as well, by updating your ```package.json```:
 
-```
 	"scripts": {
 		"start": "cservice server.js --accessKey lksjdf982734"
 	},
 	"dependencies": {
 		"cluster-service": ">=0.5.0"
 	}
-```
+
+Now we can leverage ```npm``` to find our local install of ```cluster-service```:
 
 	npm start
 
@@ -87,7 +87,7 @@ You can even pipe raw JSON, which can be parsed and processed by the caller:
 
 	cservice "restart all" --accessKey "my_access_key" --json
 
-Check out Cluster Commands for more details.
+Check out ***Cluster Commands*** for more details.
 
 
 ## Start Options
@@ -211,7 +211,7 @@ Events are emitted to interested parties.
 By default, when a process is started successfully without it exiting, it is assumed to be "running".
 This behavior is not always desired however, and may optionally be controlled by:
 
-Indicate the worker is NOT ready, via ```workers``` option:
+Indicate the worker is NOT ready, via ```ready``` option:
 
 	require("cluster-service").start({ workers: { "async_worker.js": { ready: false } } });
 
