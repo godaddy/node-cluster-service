@@ -24,6 +24,11 @@ The long answer:
 	as well as HTTP & command-line interfaces for health checks, cluster commands,
 	and custom service commands.
 
+Stability:
+
+	With the ```v0.5``` release we're effectively at an "Alpha" stage, with some semblance
+	of interface stability. Any breaking changes from now on should be handled gracefully
+	with either a deprecation schedule, or documented as a breaking change if necessary.
 
  
 ## Getting Started
@@ -83,7 +88,7 @@ We can also issue commands from a seperate process, or even a remote machine (as
 	npm install -g cluster-service
 	cservice "restart all" --accessKey "my_access_key"
 
-You can even pipe raw JSON, which can be parsed and processed by the caller:
+You can even pipe raw JSON, which can be processed by the caller:
 
 	cservice "restart all" --accessKey "my_access_key" --json
 
