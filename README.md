@@ -234,7 +234,8 @@ Additionally, a worker may optionally perform cleanup tasks prior to exit, via:
 
 ## Access Control
 
-Commands may be granted "inproc" (no trust), "local" (low trust), or "remote" (default). Setting access control at compile time can be done within the command, like so:
+Commands may be granted "inproc" (no trust), "local" (low trust), or "remote" (default). Setting
+access control at compile time can be done within the command, like so:
 
 ```javascript
 // exit.js
@@ -255,7 +256,7 @@ require("cluster-service").control({ "exit": "local" });
 ## Continuous Deployment
 
 Combining the Worker Process (Cluster) model with a CLI piped REST API enables the ability
-command the already-running service to replace existing workers with workers in a
+to command the already-running service to replace existing workers with workers in a
 different location. This capability is still a work in progress, but initial tests are promising.
 
 * Cluster Service A1 starts
