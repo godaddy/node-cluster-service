@@ -6,7 +6,7 @@ cservice.isWorker && it("WORKER", function(done) { });
 cservice.isMaster && describe('[Start & Stop]', function(){
 	it('Start worker', function(done){
 		assert.equal(cservice.workers.length, 0, "0 workers expected, but " + cservice.workers.length + " found");
-		cservice.start({ workers: { basic: { worker: "./test/workers/basic", count: 1 } }, accessKey: "123", cli: false }, function() {
+		cservice.start({ config: "./test/workers/basic.json" }, function() {
 			assert.equal(cservice.workers.length, 1, "1 worker expected, but " + cservice.workers.length + " found");
 			done();
 		});

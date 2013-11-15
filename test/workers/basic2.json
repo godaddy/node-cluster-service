@@ -1,0 +1,5 @@
+{
+	"workers": {
+		"basic2": { "worker": "./test/workers/basic2.js", "ready": false }
+	}, "accessKey": "123", "cli": false
+}
