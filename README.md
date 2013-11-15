@@ -26,7 +26,7 @@ The long answer:
 
 Stability:
 
-	With the ```v0.5``` release we're effectively at an "Alpha" stage, with some semblance
+	With the v0.5 release we're effectively at an "Alpha" stage, with some semblance
 	of interface stability. Any breaking changes from now on should be handled gracefully
 	with either a deprecation schedule, or documented as a breaking change if necessary.
 
