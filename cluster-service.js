@@ -6,9 +6,7 @@ var
 
 module.exports = exports;
 
-exports.control = function(controls){
-	require("./lib/control").addControls(controls);
-};
+exports.control = require("./lib/control").addControls;
 
 exports.start = require("./lib/start");
 
