@@ -5,6 +5,7 @@ var extend = require("extend");
 var request = require("request");
 
 cservice.log = function() {};
+cservice.results = function() {};
 cservice.isWorker && it("WORKER", function(done) { });
 cservice.isMaster && describe('[REST Server]', function(){
 	it('Start worker', function(done){
@@ -38,6 +39,14 @@ cservice.isMaster && describe('[REST Server]', function(){
 		return "disabled";
 	};
 
+	/*it('Run cmd', function(done) {
+		cservice.start({ run: "health", accessKey: "123" }, function(err, result) {
+			assert.ifError(err);
+			assert.equal(result, "\"OK\"", "Expected OK, but received: " + result);
+			done();
+		});
+	});*/
+	
 	it('Command authorization', function(done){
 		cservice.on("disabledCmd", disabledCmd);
 		var url = "http://localhost:11987/cli?cmd=disabledCmd&accessKey=123";
