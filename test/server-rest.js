@@ -39,13 +39,14 @@ cservice.isMaster && describe('[REST Server]', function(){
 		return "disabled";
 	};
 
-	/*it('Run cmd', function(done) {
-		cservice.start({ run: "health", accessKey: "123" }, function(err, result) {
+	it('Run cmd', function(done) {
+		cservice.start({ run: "health" }, function(err, result) {
 			assert.ifError(err);
 			assert.equal(result, "\"OK\"", "Expected OK, but received: " + result);
 			done();
+			return false;
 		});
-	});*/
+	});
 	
 	it('Command authorization', function(done){
 		cservice.on("disabledCmd", disabledCmd);
