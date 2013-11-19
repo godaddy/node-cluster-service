@@ -6,18 +6,10 @@ var
 
 module.exports = exports;
 
-exports.control = require("./lib/control").addControls;
-
-exports.start = require("./lib/start");
-
-exports.stop = require("./lib/stop");
-
 exports.debug = require("./lib/util").debug;
 exports.log = require("./lib/util").log;
 exports.error = require("./lib/util").error;
 exports.results = require("./lib/util").results;
-
-exports.trigger = require("./lib/trigger");
 
 exports.workerReady = require("./lib/worker-ready");
 
@@ -49,11 +41,20 @@ Object.defineProperty(exports, "locals", {
 	}
 });
 
-exports.newWorker = require("./lib/new-worker");
+if (cluster.isMaster === true) {
+	exports.control = require("./lib/control").addControls;
+	exports.stop = require("./lib/stop");
+	exports.trigger = require("./lib/trigger");
+	exports.newWorker = require("./lib/new-worker");
+	exports.on = require("./lib/on");
+}
 
-exports.on = require("./lib/on");
+exports.start = require("./lib/start");
 
 if (cluster.isWorker === true && typeof (cluster.worker.module) === "undefined") {
+	cluster.worker.module = {}; // intermediate state to prevent 2nd call while async in progress
 	// load the worker if not already loaded
-	cluster.worker.module = require(process.env.worker);
+	setTimeout(function() { // async, in case worker loads cluster-service, we need to return before it's avail
+		cluster.worker.module = require(process.env.worker);
+	}, 10);
 }
