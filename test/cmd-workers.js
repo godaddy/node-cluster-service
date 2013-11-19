@@ -24,7 +24,7 @@ cservice.isMaster && describe('[Workers cmd]', function(){
     	var callback = function(nullObj, obj){
     		assert.equal(nullObj, null);
     		assert.equal(obj.info, "Returns list of active worker processes.");
-    		assert.equal(obj.command, "workers");
+    		assert.equal(obj.command, "workers [simple|details]");
     		done();
     	};
 
