@@ -1,4 +1,6 @@
 node_modules
 coverage
 
+*.suo
+
 npm-debug.log

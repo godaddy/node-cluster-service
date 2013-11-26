@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{d1ef2fbf-74dc-4b13-b9a6-a422ef27216e}</ProjectGuid>
+    <ProjectHome>..\</ProjectHome>
+    <ProjectView>ShowAllFiles</ProjectView>
+    <StartupFile>cluster-service.js</StartupFile>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Content Include=".travis.yml" />
+    <Content Include="bin\cservice" />
+    <Content Include="bin\cserviced" />
+    <Content Include="LICENSE.txt" />
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+    <Compile Include="cluster-service.js" />
+    <Content Include=".git\ms-persist.xml" />
+    <Compile Include="lib\cli.js" />
+    <Compile Include="lib\control.js" />
+    <Compile Include="lib\defaults.js" />
+    <Compile Include="lib\http-client.js" />
+    <Compile Include="lib\http-server.js" />
+    <Compile Include="lib\legacy.js" />
+    <Compile Include="lib\master.js" />
+    <Compile Include="lib\new-worker.js" />
+    <Compile Include="lib\on.js" />
+    <Compile Include="lib\run.js" />
+    <Compile Include="lib\start.js" />
+    <Compile Include="lib\stop.js" />
+    <Compile Include="lib\trigger.js" />
+    <Compile Include="lib\util.js" />
+    <Compile Include="lib\worker-ready.js" />
+    <Compile Include="lib\workers.js" />
+    <Compile Include="test\cmd-exit.js" />
+    <Compile Include="test\cmd-health.js" />
+    <Compile Include="test\cmd-help.js" />
+    <Compile Include="test\cmd-version.js" />
+    <Compile Include="test\cmd-workers.js" />
+    <Compile Include="test\control.js" />
+    <Compile Include="test\server-rest.js" />
+    <Compile Include="test\start-restart.js" />
+    <Compile Include="test\start-stop.js" />
+    <Compile Include="test\util.js" />
+    <Compile Include="test\workers.js" />
+    <Compile Include="lib\commands\exit.js" />
+    <Compile Include="lib\commands\health.js" />
+    <Compile Include="lib\commands\help.js" />
+    <Compile Include="lib\commands\restart.js" />
+    <Compile Include="lib\commands\shutdown.js" />
+    <Compile Include="lib\commands\start.js" />
+    <Compile Include="lib\commands\upgrade.js" />
+    <Compile Include="lib\commands\version.js" />
+    <Compile Include="lib\commands\workers.js" />
+    <Content Include="test\workers\basic.json" />
+    <Content Include="test\workers\basic2.json" />
+    <Compile Include="test\workers\basic.js" />
+    <Compile Include="test\workers\basic2.js" />
+    <Compile Include="test\workers\longInit.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".git" />
+    <Folder Include="bin\" />
+    <Folder Include="lib" />
+    <Folder Include="lib\commands" />
+    <Folder Include="test" />
+    <Folder Include="test\workers" />
+    <Folder Include="vs\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
