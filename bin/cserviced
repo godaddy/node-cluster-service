@@ -8,7 +8,7 @@ var
 var args = process.argv.slice(2);
 var cservicePath = path.resolve(__dirname, '..', 'bin', 'cservice');
 args.splice(0, 0, cservicePath);
-args.push("--cliEnabled");
+args.push("--cli");
 args.push("false");
 
 var cservice = spawn(process.execPath, args, {
