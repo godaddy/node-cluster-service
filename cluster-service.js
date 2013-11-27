@@ -47,6 +47,8 @@ if (cluster.isMaster === true) {
 	exports.trigger = require("./lib/trigger");
 	exports.newWorker = require("./lib/new-worker");
 	exports.on = require("./lib/on");
+} else {
+	exports.on = function() { };
 }
 
 exports.start = require("./lib/start");
