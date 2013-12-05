@@ -59,4 +59,7 @@ if (cluster.isWorker === true && typeof (cluster.worker.module) === "undefined")
 	setTimeout(function() { // async, in case worker loads cluster-service, we need to return before it's avail
 		cluster.worker.module = require(process.env.worker);
 	}, 10);
+
+    // start worker monitor to establish two-way relationship with master
+    require("./lib/workers").monitor();
 }
