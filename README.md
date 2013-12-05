@@ -24,6 +24,10 @@ The long answer:
 	as well as HTTP & command-line interfaces for health checks, cluster commands,
 	and custom service commands.
 
+Presentation:
+
+	http://x.co/bpnode
+
 Stability:
 
 	With the v0.5 release we're effectively at an "Alpha" stage, with some semblance
@@ -137,6 +141,10 @@ Or within your node app:
 * silent (default: false) - If true, forked workers will not send their output to parent's stdio.
 * allowHttpGet (default: false) - For development purposes, can be enabled for testing, but is
   not recommended otherwise.
+* restartOnMemUsage (default: disabled) - If a worker process exceeds the specified memory threshold
+  (in bytes), the process will be restarted gracefully. Only one worker will be restarted at a time.
+* restartOnUpTime (default: disabled) - If a worker process exceeds the specified uptime threshold
+  (in seconds), the process will be restarted gracefully. Only one worker will be restarted at a time.
   
 
 ## Console & REST API
