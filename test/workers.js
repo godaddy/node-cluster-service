@@ -1,5 +1,6 @@
 var cservice = require("../cluster-service");
 var assert = require("assert");
+var sinon = require("sinon");
 var stats = {
   onWorkerReady: 0,
   onWorkerStop: 0
@@ -67,8 +68,40 @@ if(cservice.isWorker){
       );
       done();
     });
+
+    describe("#send", function(){
+      var original;
+
+      beforeEach(function(){
+        original = [];
+        cservice.workers.map(function(worker){
+          var stub = sinon.stub();
+          original.push(worker);
+          stub.pid = worker.pid;
+          return stub;
+        });
+      });
+
+      afterEach(function(){
+        cservice.workers.map(original.shift);
+      });
+
+      it("sends the message to all workers", function() {
+        var workersCalled = 0;
+        //act
+        cservice.workers.send({boo:true});
+        //assert
+        cservice.workers.map(function(stub){
+          sinon.calledWith(stub, sinon.match({boo:true}));
+          workersCalled+=1;
+        });
+
+        assert.equal(workersCalled, original.length);
+      });
+    });
   });
 }
+
 function fakeSend(o) {
   stats.onWorkerReady++;
 }
