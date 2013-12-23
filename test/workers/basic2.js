@@ -1,7 +1,5 @@
-var
-	cservice = require("../../cluster-service")
-;
+var cservice = require("../../cluster-service");
 
 setTimeout(function() {
-	cservice.workerReady();
+  cservice.workerReady();
 }, 100);

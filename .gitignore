@@ -4,3 +4,6 @@ coverage
 *.suo
 
 npm-debug.log
+
+# Netbeans
+/nbproject/
