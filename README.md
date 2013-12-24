@@ -120,6 +120,7 @@ Or within your node app:
   the ```.js``` extension is detected.
 * accessKey - A secret key that must be specified if you wish to invoke commands to your service.
   Allows CLI & REST interfaces.
+* master - An optional module to execute for the master process only, once ```start``` has been completed.
 * config - A filename to the configuration to load. Useful to keep options from having to be inline.
   This option is automatically set if run via command-line ```cservice "config.json"``` if
   the ```.json``` extension is detected.
