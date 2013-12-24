@@ -9,7 +9,7 @@ describe('[Bin]', function(){
       done();
     });
   });
-  
+
   it("bin/cserviced", function(done) {
     fs.readFile("./bin/cserviced", { encoding: "utf8" }, function(err, data) {
       assert.ifError(err);
@@ -17,4 +17,4 @@ describe('[Bin]', function(){
       done();
     });
   });
-})
+});

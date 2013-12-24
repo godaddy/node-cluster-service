@@ -1,5 +1,3 @@
-var
-	cservice = require("../../cluster-service")
-;
+var cservice = require("../../cluster-service");
 
 cservice.workerReady();

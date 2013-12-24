@@ -8,18 +8,23 @@
   "description": "Turns your single process code into a fault-resilient multi-process service with built-in REST & CLI support",
   "main": "./cluster-service.js",
   "scripts": {
-    "test": "istanbul cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 -d"
+    "lint" : "npm run-script lint-src && npm run-script lint-test",
+    "lint-src": "jshint bin lib cluster-service.js",
+    "lint-test": "jshint --config .test-jshintrc test",
+    "cover":"istanbul cover ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 -d",
+    "test": "npm run-script lint && npm run-script cover"
   },
   "dependencies": {
     "async": ">=0.2.x",
-	"optimist": ">=0.6.0",
-	"colors": ">=0.6.2",
+    "optimist": ">=0.6.0",
+    "colors": ">=0.6.2",
     "extend": ">=1.1.x"
   },
   "devDependencies": {
     "mocha": "~1.12.0",
     "request": ">=2.21.0",
-    "istanbul": "~0.1.43"
+    "istanbul": "~0.1.43",
+    "jshint": "2.3.x"
   },
   "repository": {
     "type": "git",
@@ -42,18 +47,18 @@
     "high availability",
     "cli",
     "remote access",
-	"multi process",
-	"master",
-	"child",
-	"process",
-	"monitor",
-	"monitoring",
-	"continous integration",
-	"healthcheck",
-	"heartbeat",
-	"health check",
-	"heart beat",
-	"REST",
-	"resilient"
+    "multi process",
+    "master",
+    "child",
+    "process",
+    "monitor",
+    "monitoring",
+    "continous integration",
+    "healthcheck",
+    "heartbeat",
+    "health check",
+    "heart beat",
+    "REST",
+    "resilient"
   ]
 }
