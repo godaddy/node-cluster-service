@@ -81,7 +81,7 @@ if(cservice.isWorker){
       cservice.trigger("start", function(err, result) {
         assert.equal(err, "timed out");
         done();
-      }, "./test/workers/longInit", {ready: false, count: 1, timeout: 1000});
+      }, "./test/workers/longInit", {ready: false, count: 1, timeout: 100});
     });
 
     it('Start help', function(done) {
