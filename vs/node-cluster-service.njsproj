@@ -16,6 +16,8 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Compile Include="test\workers\legacyReady.js" />
+    <Compile Include="test\workers\master.js" />
     <Content Include=".travis.yml" />
     <Content Include="bin\cservice" />
     <Content Include="bin\cserviced" />
@@ -46,6 +48,7 @@
     <Compile Include="test\cmd-version.js" />
     <Compile Include="test\cmd-workers.js" />
     <Compile Include="test\control.js" />
+    <Compile Include="test\master.js" />
     <Compile Include="test\server-rest.js" />
     <Compile Include="test\start-restart.js" />
     <Compile Include="test\start-stop.js" />
@@ -64,6 +67,7 @@
     <Content Include="test\workers\basic2.json" />
     <Compile Include="test\workers\basic.js" />
     <Compile Include="test\workers\basic2.js" />
+    <Compile Include="test\workers\inlineReady.js" />
     <Compile Include="test\workers\longInit.js" />
   </ItemGroup>
   <ItemGroup>

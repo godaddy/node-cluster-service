@@ -146,5 +146,102 @@ if(cservice.isWorker){
         done();
       });
     });
+    
+    it('Start legacy async worker', function(done) {
+      var startTime = new Date().getTime();
+      cservice.start(
+        {
+          workers:
+          {
+            legacyReady: {
+              worker: "./test/workers/legacyReady.js",
+              ready: false,
+              count: 1
+            }
+          }
+        },
+        function() {
+          assert.equal(
+            cservice.workers.length,
+            1,
+            "1 worker expected, but " + cservice.workers.length + " found"
+          );
+          var diffTime = (new Date().getTime() - startTime);
+          assert.ok(diffTime >= 1000,
+            "Legacy workerReady logic should have taken >= 1000ms, " +
+            "but returned in " + diffTime + "ms"
+          );
+          done();
+        }
+      );
+    });
+
+    it('Start legacy async worker with ready set to true', function(done) {
+      var startTime = new Date().getTime();
+      cservice.start(
+        {
+          workers:
+          {
+            legacyReady: {
+              worker: "./test/workers/legacyReady.js",
+              ready: true,
+              count: 1
+            }
+          }
+        },
+        function() {
+          assert.equal(
+            cservice.workers.length,
+            2,
+            "2 workers expected, but " + cservice.workers.length + " found"
+          );
+          var diffTime = (new Date().getTime() - startTime);
+          assert.ok(diffTime < 1000,
+            "Legacy workerReady logic should have taken < 1000ms, " +
+            "but returned in " + diffTime + "ms"
+          );
+          done();
+        }
+      );
+    });
+
+    it('Start inline async worker', function(done) {
+      var startTime = new Date().getTime();
+      cservice.start(
+        {
+          workers:
+          {
+            inlineReady: {
+              worker: "./test/workers/inlineReady.js",
+              count: 1
+            }
+          }
+        },
+        function() {
+          assert.equal(
+            cservice.workers.length,
+            3,
+            "3 workers expected, but " + cservice.workers.length + " found"
+          );
+          var diffTime = (new Date().getTime() - startTime);
+          assert.ok(diffTime >= 1000,
+            "Inline workerReady logic should have taken >= 1000ms, " +
+            "but returned in " + diffTime + "ms"
+          );
+          done();
+        }
+      );
+    });
+
+    it('Stop workers', function(done) {
+      cservice.stop(30000, function() {
+        assert.equal(
+          cservice.workers.length,
+          0,
+          "0 workers expected, but " + cservice.workers.length + " found"
+        );
+        done();
+      });
+    });
   });
 }

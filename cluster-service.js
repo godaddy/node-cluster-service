@@ -63,6 +63,10 @@ if (
   // it's avail
   setTimeout(function() {
     cluster.worker.module = require(process.env.worker);
+    if (locals.workerReady === undefined && process.env.ready === false) {
+      // if workerReady not invoked explicitly, inform master worker is ready
+      exports.workerReady();
+    }
   }, 10);
 
   // start worker monitor to establish two-way relationship with master

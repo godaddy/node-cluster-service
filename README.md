@@ -115,7 +115,7 @@ Or within your node app:
 
 * workers (default: "./worker.js") - Path of worker to start. A string indicates a single worker,
   forked based on value of ```workerCount```. An object indicates one or more worker objects:
-  ```{ "worker1": { worker: "worker1.js", cwd: process.cwd(), count: 2, ready: true, restart: true } }```.
+  ```{ "worker1": { worker: "worker1.js", cwd: process.cwd(), count: 2, ready: false, restart: true } }```.
   This option is automatically set if run via command-line ```cservice "worker.js"``` if
   the ```.js``` extension is detected.
 * accessKey - A secret key that must be specified if you wish to invoke commands to your service.
@@ -222,16 +222,13 @@ Events are emitted to interested parties.
 
 ## Async Support
 
-By default, when a process is started successfully without it exiting, it is assumed to be "running".
+By default, when a process is started successfully without exiting, it is assumed to be "running".
 This behavior is not always desired however, and may optionally be controlled by:
-
-Indicate the worker is NOT ready, via ```ready``` option:
-
-	require("cluster-service").start({ workers: { "async": { worker: "async_worker.js", ready: false } } });
 
 Have the worker inform the master once it is actually ready:
 
 	// worker.js
+	require("cluster-service").workerReady(false); // we're NOT ready!
 	setTimeout(funtion() {
 		// dumb example of async support
 		require("cluster-service").workerReady(); // we're ready!
