@@ -131,8 +131,8 @@ Or within your node app:
 * workerCount (default: os.cpus().length) - Gives you control over the number of processes to
   run the same worker concurrently. Recommended to be 2 or more for fault resilience. But some
   workers do not impact availability, such as task queues, and can be run as a single instance.
-* cli (default: true) - Enable the command line interface. Can be disabled for background
-  services, or test cases.
+* cli (default: false) - Enable the command line interface. Can be disabled for background
+  services, or test cases. Note: As of v0.7 and later, this defaults to true if run from command-line.
 * ssl - If provided, will bind using HTTPS by passing this object as the
   [TLS options](http://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener).
 * run - Ability to run a command, output result in json, and exit. This option is automatically
