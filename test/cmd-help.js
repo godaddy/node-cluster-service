@@ -34,6 +34,16 @@ if(cservice.isWorker){
           data.more,
           "Commands (Use 'help [command_name]' for more details)"
         );
+        assert.ok(data.commands);
+        var invisible_commands = data.commands.filter(
+          function(el) {
+            return (el === "workerStart" || el === "workerExit");
+          }
+        );
+        assert.equal(invisible_commands.length, 0,
+          "Expected to find 0 invisible commands, but found " +
+          invisible_commands.length
+        );
         done();
       });
     });
