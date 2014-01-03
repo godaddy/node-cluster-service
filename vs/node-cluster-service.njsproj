@@ -17,6 +17,9 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
     <Compile Include="test\bin.js" />
+    <Compile Include="test\commands2\custom-name.js" />
+    <Compile Include="test\commands\custom.js" />
+    <Compile Include="test\commands.js" />
     <Compile Include="test\workers\legacyReady.js" />
     <Compile Include="test\workers\master.js" />
     <Content Include=".travis.yml" />
@@ -35,7 +38,7 @@
     <Compile Include="lib\legacy.js" />
     <Compile Include="lib\master.js" />
     <Compile Include="lib\new-worker.js" />
-    <Compile Include="lib\on.js" />
+    <Compile Include="lib\commands.js" />
     <Compile Include="lib\run.js" />
     <Compile Include="lib\start.js" />
     <Compile Include="lib\stop.js" />
@@ -77,6 +80,8 @@
     <Folder Include="lib" />
     <Folder Include="lib\commands" />
     <Folder Include="test" />
+    <Folder Include="test\commands\" />
+    <Folder Include="test\commands2\" />
     <Folder Include="test\workers" />
     <Folder Include="vs\" />
   </ItemGroup>

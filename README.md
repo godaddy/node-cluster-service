@@ -146,6 +146,11 @@ Or within your node app:
   (in bytes), the process will be restarted gracefully. Only one worker will be restarted at a time.
 * restartOnUpTime (default: disabled) - If a worker process exceeds the specified uptime threshold
   (in seconds), the process will be restarted gracefully. Only one worker will be restarted at a time.
+* commands - A single directory, an array of directories, or a comma-delimited list of directories
+  may be provided to auto-register commands found in the provided folders that match the ".js"
+  extension. If the module exposes the "id" property, that will be the name of the command,
+  otherwise the filename (minus the extension) will be used as the name of the command. If relative
+  paths are provided, they will be resolved from process.cwd().
   
 
 ## Console & REST API
@@ -209,6 +214,11 @@ Creating custom, or overriding commands and events is as simple as:
 	// can also issue commands programatically
 	cservice.trigger("custom", function(err) { /* my callback */ }, "arg1value", "arg2value");
 
+You may optionally register one more directories of commands via the ```commands``` option:
+
+	cservice.start({ commands: "./commands,../some_more_commands" });
+
+The above example allows you to skip manually registering each command via ```cservice.on```.
 
 
 ## Cluster Events

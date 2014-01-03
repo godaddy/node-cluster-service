@@ -44,10 +44,11 @@ if (cluster.isMaster === true) {
   exports.stop = require("./lib/stop");
   exports.trigger = require("./lib/trigger");
   exports.newWorker = require("./lib/new-worker");
-  exports.on = require("./lib/on");
+  exports.on = require("./lib/commands").on;
+  exports.registerCommands = require("./lib/commands").register;
 } else {
-  exports.on = function() {
-  };
+  exports.on = function() { };
+  exports.registerCommands = function() { };
 }
 
 exports.start = require("./lib/start");
