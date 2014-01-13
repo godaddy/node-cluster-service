@@ -16,6 +16,10 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
+    <Compile Include="lib\commands\info.js" />
+    <Compile Include="lib\commands\workerExit.js" />
+    <Compile Include="lib\commands\workerStart.js" />
+    <Compile Include="lib\net-stats.js" />
     <Compile Include="test\bin.js" />
     <Compile Include="test\commands2\custom-name.js" />
     <Compile Include="test\commands\custom.js" />

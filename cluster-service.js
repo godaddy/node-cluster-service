@@ -52,6 +52,7 @@ if (cluster.isMaster === true) {
 }
 
 exports.start = require("./lib/start");
+exports.netStats = require("./lib/net-stats");
 
 if (
   cluster.isWorker === true

@@ -3,11 +3,13 @@
 [![Build Status](https://travis-ci.org/godaddy/node-cluster-service.png)](https://travis-ci.org/godaddy/node-cluster-service) [![NPM version](https://badge.fury.io/js/cluster-service.png)](http://badge.fury.io/js/cluster-service) [![Dependency Status](https://gemnasium.com/godaddy/node-cluster-service.png)](https://gemnasium.com/godaddy/node-cluster-service) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/godaddy/node-cluster-service/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 
+
 ## Install
 
 	npm install cluster-service
 
 https://npmjs.org/package/cluster-service
+
 
 
 ## About
@@ -34,6 +36,7 @@ Stability:
 	of interface stability. Any breaking changes from now on should be handled gracefully
 	with either a deprecation schedule, or documented as a breaking change if necessary.
 
+ 
  
 ## Getting Started
 
@@ -99,6 +102,7 @@ You can even pipe raw JSON, which can be processed by the caller:
 Check out ***Cluster Commands*** for more details.
 
 
+
 ## Start Options
 
 When initializing your service, you have a number of options available:
@@ -151,6 +155,8 @@ Or within your node app:
   extension. If the module exposes the "id" property, that will be the name of the command,
   otherwise the filename (minus the extension) will be used as the name of the command. If relative
   paths are provided, they will be resolved from process.cwd().
+* `servers` - One (object) or more (array of objects) `Net` objects to listen for ***Net Stats***.
+  
   
 
 ## Console & REST API
@@ -193,6 +199,7 @@ Commands may be disabled by overriding them.
 * `upgrade all|pid workerPath { [cwd] [timeout:60] }` - Gracefully upgrade service, one worker at a time. (continuous deployment support).
 * `workers` - Returns list of active worker processes.
 * `health` - Returns health of service. Can be overidden by service to expose app-specific data.
+* `info` - Returns summary of process & workers.
 
 
 
@@ -256,7 +263,7 @@ Additionally, a worker may optionally perform cleanup tasks prior to exit, via:
 ## Access Control
 
 Commands may be granted "inproc" (high risk), "local" (low risk), or "remote" (no risk). Setting
-access control at compile time can be done within the command, like so:
+access control can be done within the command, like so:
 
 ```javascript
 // exit.js
@@ -291,6 +298,24 @@ different location. This capability is still a work in progress, but initial tes
 * Upgrade reports success
 
 	
+  
+## Net Stats
+
+As of v0.8, you may optionally collect network statistics within cservice. To enable this feature,
+you must provide all Net object servers (tcp, http, https, etc) in one of two ways:
+
+  var server = require("http").createServer(onRequest);
+  require("cluster-service").netStats(server); // listen to net stats
+
+Or you can provide the net server objects via the ```servers``` option:
+
+  var server = require("http").createServer(onRequest);
+  require("cluster-service").workerReady({ servers: [server] }); // listen to net stats
+  
+Net statistics summary may be found via the ```info``` command, and individual process
+net statistics may be found via the ```workers``` command.
+ 
+ 
 
 ## Tests & Code Coverage
 
