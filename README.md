@@ -113,40 +113,40 @@ Or within your node app:
 	// or via config
 	require("cluster-service").start({ config: "config.json" });
 
-* workers (default: "./worker.js") - Path of worker to start. A string indicates a single worker,
+* `workers` (default: "./worker.js") - Path of worker to start. A string indicates a single worker,
   forked based on value of ```workerCount```. An object indicates one or more worker objects:
   ```{ "worker1": { worker: "worker1.js", cwd: process.cwd(), count: 2, ready: false, restart: true } }```.
   This option is automatically set if run via command-line ```cservice "worker.js"``` if
   the ```.js``` extension is detected.
-* accessKey - A secret key that must be specified if you wish to invoke commands to your service.
+* `accessKey` - A secret key that must be specified if you wish to invoke commands to your service.
   Allows CLI & REST interfaces.
-* master - An optional module to execute for the master process only, once ```start``` has been completed.
-* config - A filename to the configuration to load. Useful to keep options from having to be inline.
+* `master` - An optional module to execute for the master process only, once ```start``` has been completed.
+* `config` - A filename to the configuration to load. Useful to keep options from having to be inline.
   This option is automatically set if run via command-line ```cservice "config.json"``` if
   the ```.json``` extension is detected.
-* host (default: "localhost") - Host to bind to for REST interface. (Will only bind if accessKey
+* `host` (default: "localhost") - Host to bind to for REST interface. (Will only bind if accessKey
   is provided)
-* port (default: 11987) - Port to bind to. If you leverage more than one cluster-service on a
+* `port` (default: 11987) - Port to bind to. If you leverage more than one cluster-service on a
   machine, you'll want to assign unique ports. (Will only bind if accessKey is provided)
-* workerCount (default: os.cpus().length) - Gives you control over the number of processes to
+* `workerCount` (default: os.cpus().length) - Gives you control over the number of processes to
   run the same worker concurrently. Recommended to be 2 or more for fault resilience. But some
   workers do not impact availability, such as task queues, and can be run as a single instance.
-* cli (default: false) - Enable the command line interface. Can be disabled for background
+* `cli` (default: false) - Enable the command line interface. Can be disabled for background
   services, or test cases. Note: As of v0.7 and later, this defaults to true if run from command-line.
-* ssl - If provided, will bind using HTTPS by passing this object as the
+* `ssl` - If provided, will bind using HTTPS by passing this object as the
   [TLS options](http://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener).
-* run - Ability to run a command, output result in json, and exit. This option is automatically
+* `run` - Ability to run a command, output result in json, and exit. This option is automatically
   set if run via command-line ```cservice "restart all"``` and no extension is detected.
-* json - If specified in conjunction with ```run```, will *only* output the result in JSON for
+* `json` - If specified in conjunction with ```run```, will *only* output the result in JSON for
   consumption from other tasks/services. No other data will be output.
-* silent (default: false) - If true, forked workers will not send their output to parent's stdio.
-* allowHttpGet (default: false) - For development purposes, can be enabled for testing, but is
+* `silent` (default: false) - If true, forked workers will not send their output to parent's stdio.
+* `allowHttpGet` (default: false) - For development purposes, can be enabled for testing, but is
   not recommended otherwise.
-* restartOnMemUsage (default: disabled) - If a worker process exceeds the specified memory threshold
+* `restartOnMemUsage` (default: disabled) - If a worker process exceeds the specified memory threshold
   (in bytes), the process will be restarted gracefully. Only one worker will be restarted at a time.
-* restartOnUpTime (default: disabled) - If a worker process exceeds the specified uptime threshold
+* `restartOnUpTime` (default: disabled) - If a worker process exceeds the specified uptime threshold
   (in seconds), the process will be restarted gracefully. Only one worker will be restarted at a time.
-* commands - A single directory, an array of directories, or a comma-delimited list of directories
+* `commands` - A single directory, an array of directories, or a comma-delimited list of directories
   may be provided to auto-register commands found in the provided folders that match the ".js"
   extension. If the module exposes the "id" property, that will be the name of the command,
   otherwise the filename (minus the extension) will be used as the name of the command. If relative
@@ -185,14 +185,14 @@ Or better yet, use the ```run``` option to do the work for you:
 While a Cluster Service may provide its own custom commands, below are provided out-of-the-box.
 Commands may be disabled by overriding them.
 
-* start workerPath [cwd] { [timeout:60] } - Gracefully start service, one worker at a time.
-* restart all|pid { [timeout:60] } - Gracefully restart service, waiting up to timeout before terminating workers.
-* shutdown all|pid { [timeout:60] } - Gracefully shutdown service, waiting up to timeout before terminating workers.
-* exit now - Forcefully exits the service.
-* help [cmd] - Get help.
-* upgrade all|pid workerPath { [cwd] [timeout:60] } - Gracefully upgrade service, one worker at a time. (continuous deployment support).
-* workers - Returns list of active worker processes.
-* health - Returns health of service. Can be overidden by service to expose app-specific data.
+* `start workerPath [cwd] { [timeout:60] }` - Gracefully start service, one worker at a time.
+* `restart all|pid { [timeout:60] }` - Gracefully restart service, waiting up to timeout before terminating workers.
+* `shutdown all|pid { [timeout:60] }` - Gracefully shutdown service, waiting up to timeout before terminating workers.
+* `exit now` - Forcefully exits the service.
+* `help [cmd]` - Get help.
+* `upgrade all|pid workerPath { [cwd] [timeout:60] }` - Gracefully upgrade service, one worker at a time. (continuous deployment support).
+* `workers` - Returns list of active worker processes.
+* `health` - Returns health of service. Can be overidden by service to expose app-specific data.
 
 
 
@@ -225,8 +225,8 @@ The above example allows you to skip manually registering each command via ```cs
 
 Events are emitted to interested parties.
 
-* workerStart (pid, reason) - Upon exit of any worker process, the process id of the exited worker. Reasons include: "start", "restart", "failure", and "upgrade".
-* workerExit (pid, reason) - Upon start of any worker process. Reasons include: "start", "restart", "failure", and "upgrade".
+* `workerStart (pid, reason)` - Upon exit of any worker process, the process id of the exited worker. Reasons include: "start", "restart", "failure", and "upgrade".
+* `workerExit (pid, reason)` - Upon start of any worker process. Reasons include: "start", "restart", "failure", and "upgrade".
 
 
 
@@ -255,7 +255,7 @@ Additionally, a worker may optionally perform cleanup tasks prior to exit, via:
 
 ## Access Control
 
-Commands may be granted "inproc" (no trust), "local" (low trust), or "remote" (default). Setting
+Commands may be granted "inproc" (high risk), "local" (low risk), or "remote" (no risk). Setting
 access control at compile time can be done within the command, like so:
 
 ```javascript
