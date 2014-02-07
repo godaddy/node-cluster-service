@@ -304,13 +304,13 @@ different location. This capability is still a work in progress, but initial tes
 As of v0.8, you may optionally collect network statistics within cservice. To enable this feature,
 you must provide all Net object servers (tcp, http, https, etc) in one of two ways:
 
-  var server = require("http").createServer(onRequest);
-  require("cluster-service").netStats(server); // listen to net stats
+	var server = require("http").createServer(onRequest);
+	require("cluster-service").netStats(server); // listen to net stats
 
 Or you can provide the net server objects via the ```servers``` option:
 
-  var server = require("http").createServer(onRequest);
-  require("cluster-service").workerReady({ servers: [server] }); // listen to net stats
+	var server = require("http").createServer(onRequest);
+	require("cluster-service").workerReady({ servers: [server] }); // listen to net stats
   
 Net statistics summary may be found via the ```info``` command, and individual process
 net statistics may be found via the ```workers``` command.
