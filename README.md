@@ -334,6 +334,11 @@ View code coverage in any browser:
 	coverage/lcov-report/index.html
 
 	
+## Change Log
+
+[Change Log](https://github.com/godaddy/node-cluster-service/blob/master/CHANGELOG.md)
+
+	
 
 ## License
 
