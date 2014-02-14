@@ -1,10 +1,34 @@
 #!/usr/bin/env node
 
+require('colors');
+var fs = require('fs');
 var path = require("path");
 var spawn = require("child_process").spawn;
 var args = process.argv.slice(2);
 var cservicePath = path.resolve(__dirname, '..', 'bin', 'cservice');
 var cservice;
+var indexOfWorkerArg = args.indexOf('--workers');
+var workerPath;
+
+
+if(!~indexOfWorkerArg){
+  args.push('--workers');
+  args.push(path.resolve(__dirname, 'defaultWorker.js'));
+} else {
+  workerPath = args[indexOfWorkerArg + 1];
+  if(!workerPath){
+    exit('--workers requires an argument');
+  } 
+  workerPath = path.resolve(process.cwd(), workerPath);
+  if(!fs.existsSync(workerPath) || !fs.statSync(workerPath).isFile()){
+    exit('--workers expects a valid path.  The following was given: '+workerPath);
+  }
+  args[indexOfWorkerArg+1] = workerPath;
+}
+
+if(!~args.indexOf('--accessKey')){
+  exit('--accessKey is required');
+}
 
 args.splice(0, 0, cservicePath);
 args.push("--cli");
@@ -16,8 +40,14 @@ cservice = spawn(process.execPath, args, {
 });
 
 cservice.on('exit', function (code) {
-  console.error('cluster-service exited: ' + code);
+  exit('cluster-service exited with code: ' + code, code);
 });
 
-cservice.unref(); // unreference so we may exit
+//Give the service an opportunity to complain, then unreference so we can exit.
+setTimeout(cservice.unref.bind(cservice), 3000);
 
+function exit(msg, code){
+  if(msg)console.error(msg.red);
+  console.error('EXITING...'.red);
+  process.exit(code || 1);
+}
