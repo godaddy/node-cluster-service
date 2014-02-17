@@ -1,8 +1,25 @@
+## v0.9.0 - 2/17/2014
+
+Features:
+
+* #51. Lockdown "help" command to "local" by default
+* #49. Support for multiple keys within 'accessKey' option. (Undocumented,experimental)
+* #54. Allow REST command to originate from body
+
+Fixes:
+
+* #46. Expect API response even on "shutdown" or "exit"
+* #52. processDetails not returned during message floods
+* #53. Net Statistics doesn't work if using multiple instances of cservice
+
+
+
 ## v0.8.0 - 1/13/2014
 
 Features:
 
 * #40. Net statistics support
+
 
 
 ## v0.7.0 - 1/3/2014
