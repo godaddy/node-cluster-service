@@ -106,4 +106,50 @@ describe('Control', function() {
       done();
     });
   });
+
+  describe('authorize keys', function() {
+    it('key not found, access NOT granted', function(done) {
+      control.setControls({ "test": "local"});
+      control.setAccessKey("abc");
+      var isAuthorized = control.authorize("test", control.levels.remote, "X");
+      assert.equal(isAuthorized, false, "isAuthorized should be false.");
+      done();
+    });
+    it('key not found, access IS granted', function(done) {
+      control.setControls({ "test": "local"});
+      control.setAccessKey("abc");
+      var isAuthorized = control.authorize("test", control.levels.local, "X");
+      assert.equal(isAuthorized, true, "isAuthorized should be true.");
+      done();
+    });
+    it('key found, access NOT granted', function(done) {
+      control.setControls({ "test": "local"});
+      control.setAccessKey("abc:disabled");
+      var isAuthorized = control.authorize("test", control.levels.local, "abc");
+      assert.equal(isAuthorized, false, "isAuthorized should be false.");
+      done();
+    });
+    it('key found, access IS granted', function(done) {
+      control.setControls({ "test": "local"});
+      control.setAccessKey("abc");
+      var isAuthorized = control.authorize("test", control.levels.local, "abc");
+      assert.equal(isAuthorized, true, "isAuthorized should be true.");
+      done();
+    });
+    it('key found, specials rights PREVENT access', function(done) {
+      control.setControls({ "test": "local"});
+      control.setAccessKey("abc[test:inproc]");
+      var isAuthorized = control.authorize("test", control.levels.local, "abc");
+      assert.equal(isAuthorized, false, "isAuthorized should be false.");
+      done();
+    });
+    it('key found, specials rights ALLOW access', function(done) {
+      control.setControls({ "test": "local"});
+      control.setAccessKey("abc[test:remote]");
+      var isAuthorized =
+        control.authorize("test", control.levels.remote, "abc");
+      assert.equal(isAuthorized, true, "isAuthorized should be true.");
+      done();
+    });
+  });
 });
