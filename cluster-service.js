@@ -65,7 +65,8 @@ if (
   // it's avail
   setTimeout(function() {
     cluster.worker.module = require(process.env.worker);
-    if (locals.workerReady === undefined && process.env.ready === false) {
+    if (locals.workerReady === undefined
+      && process.env.ready.toString() === "false") {
       // if workerReady not invoked explicitly, inform master worker is ready
       exports.workerReady();
     }

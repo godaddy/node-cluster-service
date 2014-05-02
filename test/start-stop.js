@@ -74,14 +74,14 @@ if(cservice.isWorker){
           "2 workers expected, but " + cservice.workers.length + " found"
         );
         done();
-      }, "./test/workers/basic", {ready: false, count: 1, timeout: 10000});
+      }, "./test/workers/basic", {count: 1, timeout: 10000});
     });
 
     it('Timeout on new worker', function(done) {
       cservice.trigger("start", function(err, result) {
         assert.equal(err, "timed out");
         done();
-      }, "./test/workers/longInit", {ready: false, count: 1, timeout: 100});
+      }, "./test/workers/longInit", {count: 1, timeout: 100});
     });
 
     it('Start help', function(done) {
@@ -121,7 +121,7 @@ if(cservice.isWorker){
           "2 workers expected, but " + cservice.workers.length + " found"
         );
         done();
-      }, "all", "./test/workers/basic2", {ready: false}
+      }, "all", "./test/workers/basic2"
       );
     });
 
@@ -146,64 +146,6 @@ if(cservice.isWorker){
         done();
       });
     });
-    
-    it('Start legacy async worker', function(done) {
-      var startTime = new Date().getTime();
-      cservice.start(
-        {
-          workers:
-          {
-            legacyReady: {
-              worker: "./test/workers/legacyReady.js",
-              ready: false,
-              count: 1
-            }
-          }
-        },
-        function() {
-          assert.equal(
-            cservice.workers.length,
-            1,
-            "1 worker expected, but " + cservice.workers.length + " found"
-          );
-          var diffTime = (new Date().getTime() - startTime);
-          assert.ok(diffTime >= 1000,
-            "Legacy workerReady logic should have taken >= 1000ms, " +
-            "but returned in " + diffTime + "ms"
-          );
-          done();
-        }
-      );
-    });
-
-    it('Start legacy async worker with ready set to true', function(done) {
-      var startTime = new Date().getTime();
-      cservice.start(
-        {
-          workers:
-          {
-            legacyReady: {
-              worker: "./test/workers/legacyReady.js",
-              ready: true,
-              count: 1
-            }
-          }
-        },
-        function() {
-          assert.equal(
-            cservice.workers.length,
-            2,
-            "2 workers expected, but " + cservice.workers.length + " found"
-          );
-          var diffTime = (new Date().getTime() - startTime);
-          assert.ok(diffTime < 1000,
-            "Legacy workerReady logic should have taken < 1000ms, " +
-            "but returned in " + diffTime + "ms"
-          );
-          done();
-        }
-      );
-    });
 
     it('Start inline async worker', function(done) {
       var startTime = new Date().getTime();
@@ -220,8 +162,8 @@ if(cservice.isWorker){
         function() {
           assert.equal(
             cservice.workers.length,
-            3,
-            "3 workers expected, but " + cservice.workers.length + " found"
+            1,
+            "1 workers expected, but " + cservice.workers.length + " found"
           );
           var diffTime = (new Date().getTime() - startTime);
           assert.ok(diffTime >= 1000,

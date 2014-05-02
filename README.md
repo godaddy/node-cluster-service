@@ -119,7 +119,7 @@ Or within your node app:
 
 * `workers` (default: "./worker.js") - Path of worker to start. A string indicates a single worker,
   forked based on value of ```workerCount```. An object indicates one or more worker objects:
-  ```{ "worker1": { worker: "worker1.js", cwd: process.cwd(), count: 2, ready: false, restart: true } }```.
+  ```{ "worker1": { worker: "worker1.js", cwd: process.cwd(), count: 2, restart: true } }```.
   This option is automatically set if run via command-line ```cservice "worker.js"``` if
   the ```.js``` extension is detected.
 * `accessKey` - A secret key that must be specified if you wish to invoke commands to your service.
