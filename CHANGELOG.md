@@ -1,3 +1,16 @@
+## v0.10.0 - 5/2/2014
+
+Legacy:
+
+* Dropped support for 'ready' flag, was causing support/complexity issues.
+
+Features:
+
+* Ability to start without worker
+* Ability to support multiple versions of cservice through shared state
+
+
+
 ## v0.9.0 - 2/17/2014
 
 Features:
