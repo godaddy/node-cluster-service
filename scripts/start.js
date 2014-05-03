@@ -1,0 +1,1 @@
+require("../cluster-service").start();

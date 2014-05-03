@@ -1,6 +1,8 @@
 var cluster = require("cluster");
 var colors = require("colors");
-var locals = require("./lib/defaults");
+if (!('cservice' in global)) {
+  global.cservice = { locals: require("./lib/defaults") };
+}
 
 module.exports = exports;
 
@@ -29,13 +31,13 @@ Object.defineProperty(exports, "isWorker", {
 
 Object.defineProperty(exports, "options", {
   get: function() {
-    return locals.options;
+    return global.cservice.locals.options;
   }
 });
 
 Object.defineProperty(exports, "locals", {
   get: function() {
-    return locals;
+    return global.cservice.locals;
   }
 });
 
@@ -65,7 +67,7 @@ if (
   // it's avail
   setTimeout(function() {
     cluster.worker.module = require(process.env.worker);
-    if (locals.workerReady === undefined
+    if (global.cservice.locals.workerReady === undefined
       && process.env.ready.toString() === "false") {
       // if workerReady not invoked explicitly, inform master worker is ready
       exports.workerReady();
