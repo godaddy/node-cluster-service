@@ -8,6 +8,7 @@ Features:
 
 * Ability to start without worker
 * Ability to support multiple versions of cservice through shared state
+* Added example workers to `examples/`
 
 
 
