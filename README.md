@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/godaddy/node-cluster-service.png)](https://travis-ci.org/godaddy/node-cluster-service) [![NPM version](https://badge.fury.io/js/cluster-service.png)](http://badge.fury.io/js/cluster-service) [![Dependency Status](https://gemnasium.com/godaddy/node-cluster-service.png)](https://gemnasium.com/godaddy/node-cluster-service) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/godaddy/node-cluster-service/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-
+[![NPM](https://nodei.co/npm/cluster-service.png?downloads=true&stars=true)](https://www.npmjs.org/package/cluster-service)
 
 ## Install
 
