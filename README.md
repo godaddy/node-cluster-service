@@ -14,27 +14,13 @@ https://npmjs.org/package/cluster-service
 
 ## About
 
-The short answer:
-
 	Turns your single process code into a fault-resilient multi-process service with
-	built-in REST & CLI support.
-
-The long answer:
-
-	Adds the ability to execute worker processes over N cores for extra service resilience,
-	includes worker process monitoring and restart on failure, continuous deployment,
-	as well as HTTP & command-line interfaces for health checks, cluster commands,
-	and custom service commands.
+	built-in REST & CLI support. Restart or hot upgrade your web servers with zero
+	downtime or impact to clients.
 
 Presentation:
 
 http://x.co/bpnode
-
-Stability:
-
-	With the v0.5 release we're effectively at an "Alpha" stage, with some semblance
-	of interface stability. Any breaking changes from now on should be handled gracefully
-	with either a deprecation schedule, or documented as a breaking change if necessary.
 
  
  
@@ -249,13 +235,16 @@ Have the worker inform the master once it is actually ready:
 	setTimeout(funtion() {
 		// dumb example of async support
 		require("cluster-service").workerReady(); // we're ready!
-	});
+	}, 1000);
 
 Additionally, a worker may optionally perform cleanup tasks prior to exit, via:
 
 	// worker.js
 	require("cluster-service").workerReady({
-		onWorkerStop: function() { /* lets clean this place up */ }
+		onWorkerStop: function() {
+			// lets clean this place up
+			process.exit(); // we're responsible for exiting if we register cb
+		}
 	});
 	
 	
