@@ -14,7 +14,7 @@ https://npmjs.org/package/cluster-service
 
 ## About
 
-	Turns your single process code into a fault-resilient multi-process service with
+	Turn your single process code into a fault-resilient, multi-process service with
 	built-in REST & CLI support. Restart or hot upgrade your web servers with zero
 	downtime or impact to clients.
 
@@ -26,8 +26,6 @@ http://x.co/bpnode
  
 ## Getting Started
 
-Turning your single process node app/service into a fault-resilient multi-process service with all of the bells and whistles has never been easier!
-
 Your existing application, be it console app or service of some kind:
 
 	// server.js
@@ -37,6 +35,7 @@ Leveraging ```cluster-service``` without adding a line of code:
 
 	npm install -g cluster-service
 	cservice "server.js" --accessKey "lksjdf982734"
+  // cserviced "server.js" --accessKey "lksjdf982734" // daemon
 
 This can be done without a global install as well, by updating your ```package.json```:
 
@@ -51,7 +50,7 @@ Now we can leverage ```npm``` to find our local install of ```cluster-service```
 
 	npm start
 
-Or, if you prefer to control ```cluster-service``` within your code:
+Or, if you prefer to control ```cluster-service``` within your code, we've got you covered:
 
 	// server.js
 	require("cluster-service").start({ workers: "./worker.js", accessKey: "lksjdf982734" });
@@ -81,17 +80,21 @@ We can also issue commands from a seperate process, or even a remote machine (as
 	npm install -g cluster-service
 	cservice "restart all" --accessKey "my_access_key"
 
-You can even pipe raw JSON, which can be processed by the caller:
+You can even pipe raw JSON for processing:
 
 	cservice "restart all" --accessKey "my_access_key" --json
 
-Check out ***Cluster Commands*** for more details.
+Check out ***Cluster Commands*** for more.
 
 
 
 ## Start Options
 
 When initializing your service, you have a number of options available:
+
+  cservice "server.js" --accessKey "123"
+
+Or via JSON config:
 
 	cservice "config.json"
 
@@ -103,31 +106,33 @@ Or within your node app:
 	// or via config
 	require("cluster-service").start({ config: "config.json" });
 
-* `workers` (default: "./worker.js") - Path of worker to start. A string indicates a single worker,
+### Options:
+
+* `workers` - Path of worker to start. A string indicates a single worker,
   forked based on value of ```workerCount```. An object indicates one or more worker objects:
   ```{ "worker1": { worker: "worker1.js", cwd: process.cwd(), count: 2, restart: true } }```.
   This option is automatically set if run via command-line ```cservice "worker.js"``` if
   the ```.js``` extension is detected.
-* `accessKey` - A secret key that must be specified if you wish to invoke commands to your service.
-  Allows CLI & REST interfaces.
-* `master` - An optional module to execute for the master process only, once ```start``` has been completed.
+* `accessKey` - A secret key that must be specified if you wish to invoke commands from outside
+  your process. Allows CLI & REST interfaces.
 * `config` - A filename to the configuration to load. Useful to keep options from having to be inline.
   This option is automatically set if run via command-line ```cservice "config.json"``` if
   the ```.json``` extension is detected.
-* `host` (default: "localhost") - Host to bind to for REST interface. (Will only bind if accessKey
+* `host` (default: "localhost") - Host to bind to for REST interface. (Will only bind if `accessKey`
   is provided)
 * `port` (default: 11987) - Port to bind to. If you leverage more than one cluster-service on a
   machine, you'll want to assign unique ports. (Will only bind if accessKey is provided)
 * `workerCount` (default: os.cpus().length) - Gives you control over the number of processes to
-  run the same worker concurrently. Recommended to be 2 or more for fault resilience. But some
+  run the same worker concurrently. Recommended to be 2 or more to improve availability. But some
   workers do not impact availability, such as task queues, and can be run as a single instance.
-* `cli` (default: false) - Enable the command line interface. Can be disabled for background
-  services, or test cases. Note: As of v0.7 and later, this defaults to true if run from command-line.
+* `cli` (default: true) - Enable the command line interface. Can be disabled for background
+  services, or test cases. Running `cserviced` will automatically disable the CLI.
 * `ssl` - If provided, will bind using HTTPS by passing this object as the
   [TLS options](http://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener).
-* `run` - Ability to run a command, output result in json, and exit. This option is automatically
+* `run` - Ability to run a command, output result, and exit. This option is automatically
   set if run via command-line ```cservice "restart all"``` and no extension is detected.
-* `json` - If specified in conjunction with ```run```, will *only* output the result in JSON for
+* `json` (default: false) - If specified in conjunction with ```run```,
+  will *only* output the result in JSON for
   consumption from other tasks/services. No other data will be output.
 * `silent` (default: false) - If true, forked workers will not send their output to parent's stdio.
 * `allowHttpGet` (default: false) - For development purposes, can be enabled for testing, but is
@@ -141,7 +146,7 @@ Or within your node app:
   extension. If the module exposes the "id" property, that will be the name of the command,
   otherwise the filename (minus the extension) will be used as the name of the command. If relative
   paths are provided, they will be resolved from process.cwd().
-* `servers` - One (object) or more (array of objects) `Net` objects to listen for ***Net Stats***.
+* `master` - An optional module to execute for the master process only, once ```start``` has been completed.
   
   
 
@@ -193,6 +198,10 @@ Commands may be disabled by overriding them.
 
 Creating custom, or overriding commands and events is as simple as:
 
+  cservice "server.js" --commands "./commands,../some_more_commands"
+
+Or if you prefer to manually do so via code:
+
 	var cservice = require("cluster-service");
 	cservice.on("custom", function(evt, cb, arg1, arg2) { // "custom" command
 		// can also fire custom events
@@ -207,12 +216,6 @@ Creating custom, or overriding commands and events is as simple as:
 	// can also issue commands programatically
 	cservice.trigger("custom", function(err) { /* my callback */ }, "arg1value", "arg2value");
 
-You may optionally register one more directories of commands via the ```commands``` option:
-
-	cservice.start({ commands: "./commands,../some_more_commands" });
-
-The above example allows you to skip manually registering each command via ```cservice.on```.
-
 
 ## Cluster Events
 
@@ -225,8 +228,9 @@ Events are emitted to interested parties.
 
 ## Async Support
 
-By default, when a process is started successfully without exiting, it is assumed to be "running".
-This behavior is not always desired however, and may optionally be controlled by:
+While web servers are automatically wired up and do not require async logic (as of v1.0), if
+your service requires any other asynchronous initialization code before being ready, this
+is how it can be done.
 
 Have the worker inform the master once it is actually ready:
 
@@ -243,7 +247,7 @@ Additionally, a worker may optionally perform cleanup tasks prior to exit, via:
 	require("cluster-service").workerReady({
 		onWorkerStop: function() {
 			// lets clean this place up
-			process.exit(); // we're responsible for exiting if we register cb
+			process.exit(); // we're responsible for exiting if we register this cb
 		}
 	});
 	
@@ -268,44 +272,8 @@ Or may be overriden at runtime via:
 require("cluster-service").control({ "exit": "local" });
 ```
 
-
-
-## Continuous Deployment
-
-Combining the Worker Process (Cluster) model with a CLI piped REST API enables the ability
-to command the already-running service to replace existing workers with workers in a
-different location. This capability is still a work in progress, but initial tests are promising.
-
-* Cluster Service A1 starts
-* N child worker processes started
-* Cluster Service A2 starts
-* A2 pipes CLI to A1
-* A2 issues "upgrade" command
-* A1 spins up A2 worker
-* New worker is monitored for N seconds for failure, and cancels upgrade if failure occurs
-* Remaining N workers are replaced, one by one, until all are running A2 workers
-* Upgrade reports success
-
 	
   
-## Net Stats
-
-As of v0.8, you may optionally collect network statistics within cservice. To enable this feature,
-you must provide all Net object servers (tcp, http, https, etc) in one of two ways:
-
-	var server = require("http").createServer(onRequest);
-	require("cluster-service").netStats(server); // listen to net stats
-
-Or you can provide the net server objects via the ```servers``` option:
-
-	var server = require("http").createServer(onRequest);
-	require("cluster-service").workerReady({ servers: [server] }); // listen to net stats
-  
-Net statistics summary may be found via the ```info``` command, and individual process
-net statistics may be found via the ```workers``` command.
- 
- 
-
 ## Tests & Code Coverage
 
 Download and install:

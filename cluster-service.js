@@ -54,6 +54,7 @@ if (cluster.isMaster === true) {
 }
 
 exports.start = require("./lib/start");
+exports.netServers = require("./lib/net-servers");
 exports.netStats = require("./lib/net-stats");
 
 if (
@@ -69,8 +70,11 @@ if (
     cluster.worker.module = require(process.env.worker);
     if (global.cservice.locals.workerReady === undefined
       && process.env.ready.toString() === "false") {
-      // if workerReady not invoked explicitly, inform master worker is ready
-      exports.workerReady();
+      // if workerReady not invoked explicitly, we'll track it automatically
+      exports.workerReady(false);
+      exports.netServers.waitForReady(function() {
+        exports.workerReady(); // NOW we're ready
+      });
     }
   }, 10);
 

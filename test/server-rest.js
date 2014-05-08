@@ -31,7 +31,6 @@ if(cservice.isWorker){
     });
 
     httpclient.init(
-      cservice.locals,
       extend(cservice.options, {accessKey: "123", silentMode: true})
     );
     it('Health check', function(done) {

@@ -1,8 +1,26 @@
+## v1.0.0 - 5/8/2014
+
+Features:
+
+* #56. Ability to restart web server gracefully under load with no code
+* No code required to enable net statistics
+
+Fixes:
+
+* Prevent additional commands in CLI while in progress to resolve state issues
+* Handle failed `start` command gracefully
+* Handle failed `upgrade` command gracefully
+* Fixed `start` command from preventing failed workers to auto-restart
+* Fixed `restart` command from preventing failed workers to auto-restart
+* Further streamlined management of state across multiple cservice instances
+
+
+
 ## v0.10.0 - 5/2/2014
 
 Legacy:
 
-* Dropped support for 'ready' flag, was causing support/complexity issues.
+* Dropped support for 'ready' flag, was causing support/complexity issues
 
 Features:
 
