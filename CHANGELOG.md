@@ -13,6 +13,8 @@ Fixes:
 * Fixed `start` command from preventing failed workers to auto-restart
 * Fixed `restart` command from preventing failed workers to auto-restart
 * Further streamlined management of state across multiple cservice instances
+* Allow numeric accessKey's
+* Fix crash if no command provided in REST call
 
 
 
