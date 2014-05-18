@@ -38,7 +38,7 @@ Leveraging ```cluster-service``` without adding a line of code:
 
 	npm install -g cluster-service
 	cservice "server.js" --accessKey "lksjdf982734"
-  // cserviced "server.js" --accessKey "lksjdf982734" // daemon
+	// cserviced "server.js" --accessKey "lksjdf982734" // daemon
 
 This can be done without a global install as well, by updating your ```package.json```:
 
