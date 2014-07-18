@@ -15,7 +15,8 @@ Fixes:
 * Further streamlined management of state across multiple cservice instances
 * Allow numeric accessKey's
 * Fix crash if no command provided in REST call
-* #57. Cannot use '--run' and '--config' together 
+* #57. Cannot use '--run' and '--config' together
+* #58. Custom events from master & workers 
 
 
 

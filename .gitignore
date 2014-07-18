@@ -7,3 +7,5 @@ npm-debug.log
 
 # Netbeans
 /nbproject/
+
+.idea/

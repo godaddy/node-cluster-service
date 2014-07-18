@@ -44,7 +44,6 @@ Object.defineProperty(exports, "locals", {
 if (cluster.isMaster === true) {
   exports.control = require("./lib/control").addControls;
   exports.stop = require("./lib/stop");
-  exports.trigger = require("./lib/trigger");
   exports.newWorker = require("./lib/new-worker");
   exports.on = require("./lib/commands").on;
   exports.registerCommands = require("./lib/commands").register;
@@ -53,6 +52,7 @@ if (cluster.isMaster === true) {
   exports.registerCommands = function() { };
 }
 
+exports.trigger = require("./lib/trigger");
 exports.start = require("./lib/start");
 exports.netServers = require("./lib/net-servers");
 exports.netStats = require("./lib/net-stats");
