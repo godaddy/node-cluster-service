@@ -95,7 +95,7 @@ Check out ***Cluster Commands*** for more.
 
 When initializing your service, you have a number of options available:
 
-  cservice "server.js" --accessKey "123"
+	cservice "server.js" --accessKey "123"
 
 Or via JSON config:
 
