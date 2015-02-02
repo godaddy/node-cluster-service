@@ -185,12 +185,12 @@ Or better yet, use the ```run``` option to do the work for you:
 While a Cluster Service may provide its own custom commands, below are provided out-of-the-box.
 Commands may be disabled by overriding them.
 
-* `start workerPath [cwd] { [timeout:60] }` - Gracefully start service, one worker at a time.
-* `restart all|pid { [timeout:60] }` - Gracefully restart service, waiting up to timeout before terminating workers.
-* `shutdown all|pid { [timeout:60] }` - Gracefully shutdown service, waiting up to timeout before terminating workers.
+* `start workerPath [cwd] { [timeout:60000] }` - Gracefully start service, one worker at a time.
+* `restart all|pid { [timeout:60000] }` - Gracefully restart service, waiting up to timeout before terminating workers.
+* `shutdown all|pid { [timeout:60000] }` - Gracefully shutdown service, waiting up to timeout before terminating workers.
 * `exit now` - Forcefully exits the service.
 * `help [cmd]` - Get help.
-* `upgrade all|pid workerPath { [cwd] [timeout:60] }` - Gracefully upgrade service, one worker at a time. (continuous deployment support).
+* `upgrade all|pid workerPath { [cwd] [timeout:60000] }` - Gracefully upgrade service, one worker at a time. (continuous deployment support).
 * `workers` - Returns list of active worker processes.
 * `health` - Returns health of service. Can be overidden by service to expose app-specific data.
 * `info` - Returns summary of process & workers.
