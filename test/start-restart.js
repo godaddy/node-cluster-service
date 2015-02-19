@@ -70,8 +70,8 @@ if(cservice.isWorker){
         setTimeout(function() {
           assert.equal(
             cservice.workers.length,
-            2,
-            "2 workers expected, but " + cservice.workers.length + " found"
+            1,
+            "1 worker expected, but " + cservice.workers.length + " found"
           );
           done();
         }, 1000);
