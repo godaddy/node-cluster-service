@@ -65,7 +65,7 @@ if(cservice.isWorker){
     });
 
     // Skipping until requirements are cleared up
-    it.skip('Restart with timeout', function(done) {
+    it('Restart with timeout', function(done) {
       cservice.trigger("restart", function(err) {
         assert.equal(err, "timed out");
         setTimeout(function() {
