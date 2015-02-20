@@ -8,6 +8,8 @@ if(cservice.isWorker){
   it("WORKER", function(done) {});
 } else {
   describe('[Start & Stop]', function() {
+    this.timeout(10000);
+
     it('Start worker', function(done) {
       assert.equal(
         cservice.workers.length,
@@ -71,15 +73,18 @@ if(cservice.isWorker){
         assert.equal(
           cservice.workers.length,
           2,
-          "2 workers expected, but " + cservice.workers.length + " found"
-        );
+          "2 workers expected, but " + cservice.workers.length + " found");
         done();
       }, "./test/workers/basic", {count: 1, timeout: 10000});
     });
 
     it('Timeout on new worker', function(done) {
-      cservice.trigger("start", function(err, result) {
+      cservice.trigger("start", function(err) {
         assert.equal(err, "timed out");
+        assert.equal(
+          cservice.workers.length,
+          2,
+          "2 workers expected, but " + cservice.workers.length + " found");
         done();
       }, "./test/workers/longInit", {count: 1, timeout: 100});
     });
@@ -88,8 +93,11 @@ if(cservice.isWorker){
       cservice.trigger("help", function(err, result) {
         assert.equal(
           result.info,
-          "Gracefully start service, one worker at a time."
-        );
+          "Gracefully start service, one worker at a time.");
+        assert.equal(
+          cservice.workers.length,
+          2,
+          "2 workers expected, but " + cservice.workers.length + " found");
         done();
       }, "start");
     });
@@ -97,6 +105,10 @@ if(cservice.isWorker){
     it('Bad worker start', function(done) {
       cservice.trigger("start", function(err, result) {
         assert.equal(err, "Invalid request. Try help start");
+        assert.equal(
+          cservice.workers.length,
+          2,
+          "2 workers expected, but " + cservice.workers.length + " found");
         done();
       }, null, {count: 1, timeout: 1000});
     });
@@ -109,8 +121,7 @@ if(cservice.isWorker){
           "2 workers expected, but " + cservice.workers.length + " found"
         );
         done();
-      }, "all"
-        );
+      }, "all");
     });
 
     it('Upgrade workers', function(done) {

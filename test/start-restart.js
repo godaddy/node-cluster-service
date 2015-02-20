@@ -64,6 +64,7 @@ if(cservice.isWorker){
       );
     });
 
+    // Skipping until requirements are cleared up
     it('Restart with timeout', function(done) {
       cservice.trigger("restart", function(err) {
         assert.equal(err, "timed out");
@@ -71,12 +72,10 @@ if(cservice.isWorker){
           assert.equal(
             cservice.workers.length,
             2,
-            "2 workers expected, but " + cservice.workers.length + " found"
-          );
+            "2 workers expected, but " + cservice.workers.length + " found");
           done();
         }, 1000);
-      }, "all", {timeout: 1} // with timeout
-      );
+      }, "all", {timeout: 1});  // with timeout
     });
 
     it('Stop workers', function(done) {
