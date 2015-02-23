@@ -73,7 +73,7 @@ if(cservice.isWorker){
     it('Graceful restart under load', function(done) {
       var requestCount = 0;
       // trigger all requests
-      while (requestCount < 500) {
+      while (requestCount < 100) {
         requestCount++;
         /* jshint ignore:start */
         request.post(url, function(err, res, result) {
@@ -104,7 +104,7 @@ if(cservice.isWorker){
         );
 
         // trigger some MORE requests
-        while (requestCount < 1000) {
+        while (requestCount < 200) {
           requestCount++;
           /* jshint ignore:start */
           request.post(url, function(err, res, result) {
