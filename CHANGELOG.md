@@ -1,3 +1,16 @@
+## v2.0.0 - TBD
+
+Features:
+
+* Proxy support with dynamic app versioning
+* Worker process downgrade from root via `workerGid` & `workerUid`
+
+Enhancements:
+
+* Refactored communication between processes
+* Worker processes may now trigger commands (same) and wait for response (new)
+
+
 ## v1.0.0 - 5/8/2014
 
 Features:
@@ -16,7 +29,7 @@ Fixes:
 * Allow numeric accessKey's
 * Fix crash if no command provided in REST call
 * #57. Cannot use '--run' and '--config' together
-* #58. Custom events from master & workers 
+* #58. Custom events from master & workers
 
 
 

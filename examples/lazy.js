@@ -1,5 +1,5 @@
 var http = require('http');
-var cservice = require("cluster-service");
+var cservice = require("../cluster-service");
 
 cservice.workerReady(false); // inform cservice we're not ready yet
 
