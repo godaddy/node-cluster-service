@@ -13,7 +13,8 @@
 ### Enhancements:
 
 * Refactored communication between processes
-* Worker processes may now trigger commands (same) and wait for response (new)
+* Worker processes may now trigger commands (same) and wait for response (new).
+  The new message bus enables RPC and other flows like this between processes
 
 
 ## v1.0.0 - 5/8/2014
