@@ -74,7 +74,7 @@ if (
   // load the worker if not already loaded
   // async, in case worker loads cluster-service, we need to return before
   // it's avail
-  setTimeout(function() {
+  setImmediate(function() {
     cluster.worker.module = require(process.env.worker);
     if (global.cservice.locals.workerReady === undefined
       && process.env.ready.toString() === "false") {
@@ -84,7 +84,7 @@ if (
         exports.workerReady(); // NOW we're ready
       });
     }
-  }, 10);
+  });
 
   // start worker monitor to establish two-way relationship with master
   workers.monitor();

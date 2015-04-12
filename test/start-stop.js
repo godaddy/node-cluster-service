@@ -125,12 +125,15 @@ if(cservice.isWorker){
       );
     });
 
-    it('Stop workers', function(done) {
-      cservice.stop(30000, function() {
+    it('Stop workers after upgrade', function(done) {
+      cservice.stop(30000, function(err, msg) {
+        assert.ok(!err, 'Received error ' + err);
         assert.equal(
           cservice.workers.length,
           0,
-          "0 workers expected, but " + cservice.workers.length + " found"
+          "0 workers expected, but "
+          + cservice.workers.length
+          + " found. Message: " + msg
         );
         done();
       });
@@ -176,11 +179,14 @@ if(cservice.isWorker){
     });
 
     it('Stop workers', function(done) {
-      cservice.stop(30000, function() {
+      cservice.stop(30000, function(err, msg) {
+        assert.ok(!err, 'Received error ' + err);
         assert.equal(
           cservice.workers.length,
           0,
-          "0 workers expected, but " + cservice.workers.length + " found"
+          "0 workers expected, but "
+          + cservice.workers.length
+          + " found. Message: " + msg
         );
         done();
       });
