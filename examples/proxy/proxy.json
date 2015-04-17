@@ -15,5 +15,5 @@
     }
   ],
   "nonDefaultWorkerCount": 1,
-  "nonDefaultWorkerIdleTime": 3600
+  "nonDefaultWorkerIdleTime": 20
 }
