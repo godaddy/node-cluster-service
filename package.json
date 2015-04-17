@@ -17,10 +17,10 @@
     "test": "npm run-script lint && npm run-script cover"
   },
   "dependencies": {
-    "async": "^0.9.0",
-    "colors": "^1.0.3",
-    "http-proxy": "^1.10.1",
-    "optimist": "^0.6.1"
+    "async": "~0.8.0",
+    "optimist": ">=0.6.0",
+    "colors": ">=0.6.2",
+    "extend": ">=1.1.x"
   },
   "devDependencies": {
     "6to5": "^3.6.5",
