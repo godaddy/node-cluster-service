@@ -10,6 +10,7 @@ exports.debug = require("./lib/util").debug;
 exports.log = require("./lib/util").log;
 exports.error = require("./lib/util").error;
 exports.results = require("./lib/util").results;
+exports.processSafeSend = require("./lib/util").processSafeSend;
 exports.msgBus = require("./lib/message-bus");
 
 exports.workerReady = require("./lib/worker-ready");

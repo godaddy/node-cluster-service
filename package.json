@@ -23,7 +23,6 @@
     "extend": ">=1.1.x"
   },
   "devDependencies": {
-    "6to5": "^3.6.5",
     "istanbul": "^0.3.13",
     "jshint": "^2.7.0",
     "mocha": "^2.2.4",
