@@ -144,6 +144,9 @@ Or within your node app:
   (in bytes), the process will be restarted gracefully. Only one worker will be restarted at a time.
 * `restartOnUpTime` (default: disabled) - If a worker process exceeds the specified uptime threshold
   (in seconds), the process will be restarted gracefully. Only one worker will be restarted at a time.
+* `restartConcurrencyRatio` (default `0.33`) - The ratio of workers that can be restarted concurrently
+  during a restart or upgrade process. This can greatly improve the speed of restarts for applications
+  with many concurrent workers and/or slow initializing workers.
 * `commands` - A single directory, an array of directories, or a comma-delimited list of directories
   may be provided to auto-register commands found in the provided folders that match the ".js"
   extension. If the module exposes the "id" property, that will be the name of the command,
