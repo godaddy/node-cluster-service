@@ -2,6 +2,7 @@
 
 ### Features:
 
+* High worker restart concurrency to speed up upgrades/restarts via `restartConcurrencyRatio`
 * Proxy support with dynamic app versioning
   * Central proxy config file, promotions persisted to disk to survive service restarts
   * Isolated worker processes per version
@@ -15,6 +16,10 @@
 * Refactored communication between processes
 * Worker processes may now trigger commands (same) and wait for response (new).
   The new message bus enables RPC and other flows like this between processes
+
+### Fixes:
+
+* Worker process.send crash
 
 
 ## v1.0.0 - 5/8/2014
