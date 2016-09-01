@@ -1,7 +1,7 @@
 var cservice = require("../cluster-service");
 var assert = require("assert");
 var httpclient = require("../lib/http-client");
-var extend = require("extend");
+var util = require("util");
 var request = require("request");
 
 cservice.log = function() {};
@@ -31,7 +31,7 @@ if(cservice.isWorker){
     });
 
     httpclient.init(
-      extend(cservice.options, {accessKey: "123", silentMode: true})
+      util._extend(cservice.options, {accessKey: "123", silentMode: true})
     );
     it('Health check', function(done) {
       httpclient.execute("health", function(err, result) {

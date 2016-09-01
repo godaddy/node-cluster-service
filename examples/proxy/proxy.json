@@ -1,0 +1,19 @@
+{
+  "defaultVersion": "v1",
+  "bindings": [
+    {
+      "port": 1000,
+      "workerCount": 2
+    },
+    {
+      "port": 1001,
+      "workerCount": 2,
+      "tlsOptions": {
+        "key": "./examples/certs/test1-key.pem",
+        "cert": "./examples/certs/test1-cert.pem"
+      }
+    }
+  ],
+  "nonDefaultWorkerCount": 1,
+  "nonDefaultWorkerIdleTime": 20
+}

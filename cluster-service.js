@@ -10,6 +10,8 @@ exports.debug = require("./lib/util").debug;
 exports.log = require("./lib/util").log;
 exports.error = require("./lib/util").error;
 exports.results = require("./lib/util").results;
+exports.processSafeSend = require("./lib/util").processSafeSend;
+exports.msgBus = require("./lib/message-bus");
 
 exports.workerReady = require("./lib/worker-ready");
 
@@ -56,6 +58,7 @@ exports.trigger = require("./lib/trigger");
 exports.start = require("./lib/start");
 exports.netServers = require("./lib/net-servers");
 exports.netStats = require("./lib/net-stats");
+exports.proxy = require('./lib/proxy');
 
 if (
   cluster.isWorker === true
@@ -63,9 +66,14 @@ if (
 ){
   // intermediate state to prevent 2nd call while async in progress
   cluster.worker.module = {};
+  cluster.worker.env = process.env;
+
+  var workers = require("./lib/workers");
+
+  workers.demote();
 
   // load the worker if not already loaded
-  // async, in case worker loads cluster-service, we need to return before 
+  // async, in case worker loads cluster-service, we need to return before
   // it's avail
   setImmediate(function() {
     cluster.worker.module = require(process.env.worker);
@@ -80,5 +88,5 @@ if (
   });
 
   // start worker monitor to establish two-way relationship with master
-  require("./lib/workers").monitor();
+  workers.monitor();
 }

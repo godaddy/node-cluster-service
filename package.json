@@ -1,6 +1,6 @@
 {
   "name": "cluster-service",
-  "version": "1.0.6",
+  "version": "2.0.0-alpha4",
   "author": {
     "name": "Aaron Silvas",
     "email": "asilvas@godaddy.com"
@@ -23,11 +23,11 @@
     "extend": ">=1.1.x"
   },
   "devDependencies": {
-    "mocha": "~1.12.0",
-    "request": ">=2.21.0",
-    "istanbul": "~0.1.43",
-    "sinon": "1.7.3",
-    "jshint": "2.3.x"
+    "istanbul": "^0.3.13",
+    "jshint": "^2.7.0",
+    "mocha": "^2.2.4",
+    "request": "^2.55.0",
+    "sinon": "^1.14.1"
   },
   "repository": {
     "type": "git",

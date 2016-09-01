@@ -25,8 +25,8 @@ http://x.co/bpnode
 Video:
 
 http://x.co/bpnodevid
- 
- 
+
+
 ## Getting Started
 
 Your existing application, be it console app or service of some kind:
@@ -77,7 +77,7 @@ or for a full list of commands...
 or for help on a specific command:
 
 	help {command}
-	
+
 We can also issue commands from a seperate process, or even a remote machine (assuming proper access):
 
 	npm install -g cluster-service
@@ -144,14 +144,19 @@ Or within your node app:
   (in bytes), the process will be restarted gracefully. Only one worker will be restarted at a time.
 * `restartOnUpTime` (default: disabled) - If a worker process exceeds the specified uptime threshold
   (in seconds), the process will be restarted gracefully. Only one worker will be restarted at a time.
+* `restartConcurrencyRatio` (default `0.33`) - The ratio of workers that can be restarted concurrently
+  during a restart or upgrade process. This can greatly improve the speed of restarts for applications
+  with many concurrent workers and/or slow initializing workers.
 * `commands` - A single directory, an array of directories, or a comma-delimited list of directories
   may be provided to auto-register commands found in the provided folders that match the ".js"
   extension. If the module exposes the "id" property, that will be the name of the command,
   otherwise the filename (minus the extension) will be used as the name of the command. If relative
   paths are provided, they will be resolved from process.cwd().
 * `master` - An optional module to execute for the master process only, once ```start``` has been completed.
-  
-  
+* `proxy` - Optional path to a JSON config file to enable Proxy Support.
+* `workerGid` - Group ID to assign to child worker processes (recommended `nobody`).
+* `workerUid` - User ID to assign to child worker processes (recommended `nobody`).
+
 
 ## Console & REST API
 
@@ -177,7 +182,7 @@ Or better yet, use the ```run``` option to do the work for you:
 	cservice "help" --accessKey "lksjdf982734"
 	// same as
 	cservice --run "help" --accessKey "lksjdf982734"
-	
+
 
 
 ## Cluster Commands
@@ -210,12 +215,12 @@ Or if you prefer to manually do so via code:
 		// can also fire custom events
 		cservice.trigger("on.custom.complete", 1, 2, 3);
 	};
-	
+
 	cservice.on("test", function(evt, cb, testScript, timeout) { // we're overriding the "test" command
 		// arguments
 		// do something, no callback required (events may optionally be triggered)
-	}; 
-	
+	};
+
 	// can also issue commands programatically
 	cservice.trigger("custom", function(err) { /* my callback */ }, "arg1value", "arg2value");
 
@@ -253,8 +258,8 @@ Additionally, a worker may optionally perform cleanup tasks prior to exit, via:
 			process.exit(); // we're responsible for exiting if we register this cb
 		}
 	});
-	
-	
+
+
 
 ## Access Control
 
@@ -275,8 +280,75 @@ Or may be overriden at runtime via:
 require("cluster-service").control({ "exit": "local" });
 ```
 
-	
-  
+## Proxy Support
+
+Proxy mode specifically caters to Web Servers that you want to enable automatic
+versioning of your service. Any version requested (via `versionHeader`) that is
+not yet loaded will automatically have a worker process spun up with the new
+version, and after ready, the proxy will route to that worker.
+
+Every version of your app *must* adhere to the `PROXY_PORT` environment
+variable like so:
+
+	require("http").createServer(function(req, res) {
+	  res.writeHead(200);
+	  res.end("Hello world!");
+	}).listen(process.env.PROXY_PORT || 3000 /* port to use when not running in proxy mode */);
+
+### Proxy Options
+
+* `versionPath` (default: same directory as proxy JSON config) - Can override
+  to point to a new version folder.
+* `defaultVersion` - The version (folder name) that is currently active/live.
+  If you do not initially set this option, making a request to the Proxy without
+	a `versionHeader` will result in a 404 (Not Found) since there is no active/live
+	version.
+  Upgrades will automatically update this option to the latest upgraded version.
+* `versionHeader` (default: `x-version`) - HTTP Header to use when determining
+  non-default version to route to.
+* `workerFilename` (default: `worker.js`) - Filename of worker file.
+* `bindings` (default: `[{ port: 80, workerCount: 2 }]`) - An array of `Proxy Bindings`.
+* `versionPorts` (default: `11000-12000`) - Reserved port range that can be used to
+  assign ports to different App versions via `PROXY_PORT`.
+* `nonDefaultWorkerCount` (default: 1) - If a version is requested that is not
+  a default version, this will be the number of worker processes dedicated to
+	that version.
+* `nonDefaultWorkerIdleTime` (default: 3600) - The number of seconds of inactivity
+  before a non-default version will have its workers shut down.
+
+### Proxy Bindings
+
+Binding options:
+
+* `port` - Proxy port to bind to.
+* `workerCount` (default: 2) - Number of worker processes to use for this
+  binding. Typically more than 2 is unnecessary for a proxy, and less than 2
+	is a potential failure point if a proxy worker ever goes down.
+* `tlsOptions` - TLS Options if binding for HTTPS.
+  * `key` - Filename that contains the Certificate Key.
+	* `cert` - Filename that contains the Certificate.
+	* `pem` - Filename that contains the Certificate PEM if applicable.
+
+A full list of TLS Options: https://nodejs.org/api/tls.html#tls_tls_createserver_options_secureconnectionlistener
+
+### Proxy Commands
+
+Work like any other `Cluster Commands`.
+
+* `proxy start configPath` - Start the proxy using the provided JSON config file.
+* `proxy stop` - Shutdown the proxy service.
+* `proxy version workerVersion workerCount` - Set a given App version to the
+  desired number of worker processes. If the version is not already running,
+	it will be started. If 2 workers for the version are already running, and you
+	request 4, 2 more will be started. If 4 workers for the version are already
+	running, and you request 2, 2 will be stopped.
+* `proxy promote workerVersion workerCount` - Works identical to the
+  `proxy version` command, except this will flag the version as active/live,
+	resulting in the Proxy Config file being updated with the new `defaultVersion`.
+* `proxy info` - Fetch information about the proxy service.
+
+
+
 ## Tests & Code Coverage
 
 Download and install:
@@ -285,7 +357,7 @@ Download and install:
 	cd node-cluster-service
 	npm install
 
-Now test:	
+Now test:
 
 	npm test
 
@@ -293,12 +365,12 @@ View code coverage in any browser:
 
 	coverage/lcov-report/index.html
 
-	
+
 ## Change Log
 
 [Change Log](https://github.com/godaddy/node-cluster-service/blob/master/CHANGELOG.md)
 
-	
+
 
 ## License
 

@@ -1,0 +1,5 @@
+{
+  "bindings": [
+    { "port": 3000, "workerCount": 2 }
+  ]
+}
