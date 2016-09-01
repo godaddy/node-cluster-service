@@ -342,7 +342,7 @@ Work like any other `Cluster Commands`.
 	it will be started. If 2 workers for the version are already running, and you
 	request 4, 2 more will be started. If 4 workers for the version are already
 	running, and you request 2, 2 will be stopped.
-* `proxy promote workerVersion workerCount` - Workers identical to the
+* `proxy promote workerVersion workerCount` - Works identical to the
   `proxy version` command, except this will flag the version as active/live,
 	resulting in the Proxy Config file being updated with the new `defaultVersion`.
 * `proxy info` - Fetch information about the proxy service.
