@@ -43,6 +43,9 @@
     "cservice": "./bin/cservice",
     "cserviced": "./bin/cserviced"
   },
+  "engines": {
+    "node": ">=6"
+  },
   "keywords": [
     "cluster",
     "service",
