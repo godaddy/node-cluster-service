@@ -1,3 +1,10 @@
+## v2.1.0 - 9/1/2016
+
+### Breaking:
+
+* Updated to require Node v6 or later.
+
+
 ## v2.0.0 - 9/1/2016
 
 ### Features:
