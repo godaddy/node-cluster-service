@@ -2,7 +2,7 @@
 
 ### Fixes:
 
-* Memory leak in message bus - #78
+* Memory leak in message bus (thanks @jakepusateri !)- #78
 
 
 ## v2.1.0 - 9/1/2016
