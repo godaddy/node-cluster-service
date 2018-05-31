@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "istanbul": "^0.3.13",
-    "jshint": "^2.7.0",
+    "jshint": "^2.9.5",
     "mocha": "^2.2.4",
     "request": "^2.55.0",
     "sinon": "^1.14.1"
