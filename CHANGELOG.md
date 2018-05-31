@@ -1,3 +1,10 @@
+## v2.1.1 - 5/30/2018
+
+### Fixes:
+
+* Memory leak in message bus - #78
+
+
 ## v2.1.0 - 9/1/2016
 
 ### Breaking:
