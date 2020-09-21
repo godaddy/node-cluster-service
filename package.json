@@ -20,12 +20,12 @@
     "async": "^2.6.3",
     "colors": "^1.4.0",
     "extend": "^3.0.2",
-    "optimist": ">=0.6.0"
+    "minimist": "^1.2.5"
   },
   "devDependencies": {
     "jshint": "^2.9.7",
     "mocha": "^5.2.0",
-    "nyc": "^14.1.1",
+    "nyc": "^15.1.0",
     "request": "^2.88.0",
     "sinon": "^7.2.2"
   },
