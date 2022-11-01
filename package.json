@@ -20,7 +20,7 @@
     "async": "^3.2.2",
     "colors": "^1.4.0",
     "extend": "^3.0.2",
-    "minimist": "^1.2.6"
+    "minimist": "^1.2.7"
   },
   "devDependencies": {
     "jshint": "^2.12.0",
